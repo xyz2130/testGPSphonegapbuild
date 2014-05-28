@@ -22,21 +22,174 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
+        
+    
+    <title>Hello World</title>
+
+
+<script src="phonegap.js"></script>
+  <script type="text/javascript" src="cordova-1.7.0.js"></script>
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDNr9FNiJqte2RUWt2U55hSILO69y2rJd4&sensor=false"></script>
+  <script type="text/javascript" src="json2.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+  <script type="text/javascript" src="exercisetracker.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+  
+  <style type="text/css">
+      #arrow{
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: 50% 50% no-repeat; 
+            background-size: 30px 30px;
+            background-image: url('/img/Black_Down_Arrow.png');
+            top: 0;
+            left: 50%;
+            margin: 30px 0 0 -15px;
+        }
+  </style>
+
+  <script type="text/javascript"> 
+      document.addEventListener("deviceready", function(){
+   
+	if(navigator.network.connection.type == Connection.NONE){
+	  $("#home_network_button").text('No Internet Access')
+                 .attr("data-icon", "delete")
+                 .button('refresh');
+	}
+	
+	watchCompass();
+
+
+
+      });
+
+
+	var compassTimerId;
+        var currentHeading;
+        var prevHeading;
+        var prevCompassErrorCode;
+
+	$arrow = ${'#arrow'};
+
+	function watchCompass(){
+	  var options = {frequency: 100};
+	  if(compassTimerId) navigator.compass.clearWatch(compassTimerId);
+            compassTimerId = navigator.compass.watchHeading(onSuccess, onError, options);
+	}
+
+	function onSuccess(heading){
+            //prevHeading = currentHeading;
+            currentHeading = heading.trueHeading >= 0 ? Math.round(heading.trueHeading) : Math.round(heading.magneticHeading);
+
+            //if(currentHeading == prevHeading) return;
+
+            updateHeading();
+        }
+
+        function onError(error){
+	  alert('onError!');
+            watchCompass();
+
+            if(prevCompassErrorCode && prevCompassErrorCode == error.code) return; 
+
+            var errorType;
+            switch(error.code){
+                case 1:
+                    errorType = "Compass not supported";
+                    break;
+                case 2:
+                    errorType = "Compass internal error";
+                    break;
+                default:
+                    errorType = "Unknown compass error";
+            }
+
+            $error.html("Error while retrieving compass heading: "+errorType);
+
+            if(!$error.is(":visible")){
+                $error.show();
+                $results.hide();
+            }
+
+            prevCompassErrorCode = error.code;
+        }
+	function updateHeading(){
+            //$heading.html(currentHeading);
+            updateDifference();
+        }
+
+        function updateDifference(){
+            var diff = 0 - currentHeading;
+            //$difference.html(diff);     
+	    prevHeading = currentHeading;
+            $arrow.css("-webkit-transform", "rotate("+diff+"deg)");         
+        }
+
+  </script>
+
     </head>
     <body>
-        <div class="app">
-            <h1>PhoneGap</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-        </div>
-        <script type="text/javascript" src="phonegap.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
+<div data-role="page" id="home">
+ 
+  <div data-role="header">
+   
+    <h1>Home</h1>
+   
+    <div data-role="navbar">
+      <ul>
+        <li><a href="#home" data-transition="none" data-icon="home">Home</a></li>
+        <li><a href="#startTracking" data-transition="none" data-icon="plus">Track Route</a></li>
+        <li><a href="#history" data-transition="none" data-icon="star">History</a></li>
+	<!--<li> <div id="arrow"></div></li>-->
+      </ul>
+    </div>
+  </div>
+ 
+  <div data-role="content">
+    <p>Test tracker</p>
+    <button id="home_network_button" data-icon="check">Internet Access Enabled</button>
+    <button id="home_clearstorage_button">Clear local storage</button>
+    <button id="home_seedgps_button">Load Seed GPS Data</button>
+<div data-role="content" id="arrow"></div>
+  </div>
+ 
+ 
+</div><!--end div home-->
+
+<div data-role="page" id="startTracking">
+ 
+  <div data-role="header">
+    <h1>Track Workout</h1>
+     
+    <div data-role="navbar">
+      <ul>
+        <li><a href="#home" data-transition="none" data-icon="home">Home</a></li>
+        <li><a href="#startTracking" data-transition="none" data-icon="plus">Track Workout</a></li>
+        <li><a href="#history" data-transition="none" data-icon="star">History</a></li>
+	<!--<li> <div id="arrow" data-role="content"></div></li>-->
+      </ul>
+    </div>
+  </div>
+ 
+  <div data-role="content"> 
+    <p id="startTracking_status"></p>
+      <div data-role="fieldcontain" class="ui-hide-label">
+        <label for="track_id">Track ID/Name:</label>
+        <input type="text" name="track_id" id="track_id" placeholder="Workout ID/Name"/>
+      </div>
+ 
+    <button data-role="button" id="startTracking_start">Start Tracking</button>
+    <button data-role="button" id="startTracking_stop">Stop Tracking</button>  
+     
+        <p id="startTracking_debug"></p>
+<div data-role="content" id="arrow"></div>
+         
+  </div>
+ 
+ 
+</div><!--end div startTracking-->
+
     </body>
 </html>
