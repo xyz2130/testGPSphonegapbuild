@@ -3,7 +3,8 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.phonegap.hello-world"
+        id        = "com.phonegap.testGPS"
+        versionCode = "10"
         version   = "1.0.0">
 
     <name>testGPS</name>
@@ -15,7 +16,9 @@
     <author href="http://phonegap.com" email="support@phonegap.com">
         PhoneGap Team
     </author>
-
+	<gap:platform name="ios"/>
+	<gap:platform name="android"/>
+	<gap:platform name="winphone"/>
     <!--
         If you do not want any permissions to be added to your app, add the
         following tag to your config.xml; you will still have the INTERNET

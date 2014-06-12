@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+Design by mRova Solutions
+http://www.mrova.com
+Released for free under a Creative Commons Attribution 2.5 License
+-->
+<html>
+	<head>
+		<title>App Map</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
+
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/photoswipe.css" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.0.min.js"></script>
+    
+		<script type="text/javascript" src="js/klass.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.0.1.min.js"></script>
+		<script type="text/javascript" src="js/code.photoswipe.jquery-3.0.4.min.js"></script>
+		<script type="text/javascript" src="js/custom.js"></script>
+	
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDNr9FNiJqte2RUWt2U55hSILO69y2rJd4&sensor=true"></script>
+
+		
+		<script type="text/javascript" src="js/track_path.js"></script>
+	
+	</head>
+	<body>
+		<div data-role="page" data-add-back-btn="true">
+			<div data-role="header" id="header">
+				<a href="index.html" data-role="button" data-inline="true" data-theme="a" rel="external"><img src="img/arrow_left_icon&24.png"></a>
+				<h1><img src="img/world.png"></h1>
+			</div><!-- /header -->
+
+
+			<div data-role="content">
+				<h2>Buttons</h2>
+				<button id="home_seedgps_button">Load Seed GPS Data</button>
+				<p id="startTracking_status"></p>
+
+				<div data-role="fieldcontain" class="ui-hide-label">
+					<label for="track_id">Track ID/Name:</label>
+					<input type="text" name="track_id" id="track_id" placeholder="Track ID/Name"/>
+				</div>
+
+				<p>A grid usage:</p>
+
+				<p id="track_map"></p>
+		  
+				<div id="map_canvas" style="height:300px;"></div>
+				
+				<fieldset class="ui-grid-a">
+				    <div class="ui-block-a"><button type="submit" data-theme="b" id="startTracking_stop">Stop Tracking</button></div>
+				    <div class="ui-block-b"><button type="submit" data-theme="a" id="startTracking_start">Start Tracking</button></div>
+				    
+				</fieldset>
+				
+				<fieldset class="ui-grid-a">
+				    <div class="ui-block-a"><button type="submit" data-theme="b" id="clearstorage_button">clear storage</button></div>
+				    <div class="ui-block-b"><button type="submit" data-theme="a" id="view_track">View track</button></div>
+				    
+				</fieldset>
+				
+			
+				<p id="startTracking_info"></p>
+
+				<p class="copyright">Copyright &copy; mobi. Designed by <a href="http://mrova.com" class="ui-link">mRova</a></p>
+			</div><!-- /content -->
+
+
+			 <div data-role="footer" data-theme="a">
+			    <div class="ui-bar">
+            
+			    <a href="" data-role="button" data-theme="a" style="float:right;" class="returnTopAction"><img src="img/top.png"></a>             
+			    </div>
+			  </div><!-- /Footer --> 
+
+		</div><!-- /page -->
+	</body>
+</html>

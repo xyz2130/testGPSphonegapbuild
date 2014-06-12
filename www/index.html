@@ -1,370 +1,66 @@
 <!DOCTYPE html>
 <!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
+Design by mRova Solutions
+http://www.mrova.com
+Released for free under a Creative Commons Attribution 2.5 License
 -->
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        
-    
-    <title>Hello World</title>
+	<head>
+		<title>Trek n Track</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
 
+		<link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
 
-<script src="phonegap.js"></script>
-  <script type="text/javascript" src="cordova-1.7.0.js"></script>
-  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDNr9FNiJqte2RUWt2U55hSILO69y2rJd4&sensor=false"></script>
-  <script type="text/javascript" src="json2.js"></script>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-  <script type="text/javascript" src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-  <script type="text/javascript" src="exercisetracker.js"></script>
-  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
-  
-  <style type="text/css">
-      #arrow{
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: 50% 50% no-repeat; 
-            background-size: 30px 30px;
-            
-            margin: 30px 0 0 -15px;
-        }
-  </style>
-
-  <script type="text/javascript"> 
-      document.addEventListener("deviceready", function(){
-   
-	if(navigator.network.connection.type == Connection.NONE){
-	  $("#home_network_button").text('No Internet Access')
-                 .attr("data-icon", "delete")
-                 .button('refresh');
-	}
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/photoswipe.css" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.0.min.js"></script>
 	
-	watchCompass();
+		<script type="text/javascript" src="js/klass.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.0.1.min.js"></script>
+		<script type="text/javascript" src="js/code.photoswipe.jquery-3.0.4.min.js"></script>
+		<script type="text/javascript" src="js/custom.js"></script>
+
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDNr9FNiJqte2RUWt2U55hSILO69y2rJd4&sensor=false"></script>
+	</head>
+	<body>
+		<div data-role="page" >
+			<div data-role="header" id="header">
+				<a href="home.html" data-role="button" id="ui-btn-right" data-theme="f" style="float:right;" class="ui-btn-right" rel="external"><img src="img/signout.png" width="20"></a>
+				<h1><img src="img/house.png"></h1>
+			</div><!-- /header -->
+			<div data-role="content">
+
+  <a href="camera2.html" data-role="button" data-theme="b" rel="external"><img src="img/camera.png"></a> 
 
 
+				<ul data-role="listview" data-inset="true" data-theme="a">
+					<li>
+						<a href="profile.html" rel="external">Profile<img src="img/profile.png" id="menupic"></a>
+					</li>
+					<li>
+						<a href="ownmap.html" rel="external">Own Map<img src="img/map.png" id="menupic"></a>
+					</li>
+					<li>
+						<a href="appmap.html" rel="external" id="track_info">App Map<img src="img/world.png" id="menupic"></a>
+					</li>
+					<li>
+						<a href="parkinfo.html" rel="external">Park Info<img src="img/info.png" id="menupic"></a>
+					</li>
+					<li>
+						<a href="settings.html" rel="external">Settings<img src="img/settings.png" id="menupic"></a>
+					</li>
+				</ul>
+				<p class="copyright">Copyright &copy; mobi. Designed by <a href="http://mrova.com" class="ui-link">mRova</a></p>
+			</div><!-- /content -->
+			  <div data-role="footer" data-theme="a">
+            <div class="ui-bar">
+          
+             <a href="" data-role="button" data-theme="a" style="float:right;" class="returnTopAction" rel="external"><img src="img/top.png"></a>             
+           </div>
+          </div>
+          <!-- /Footer --> 
 
-      });
-
-
-	var compassTimerId;
-        var currentHeading;
-        var prevHeading;
-        var prevCompassErrorCode;
-
-	$arrow = ${'#arrow'};
-
-	function watchCompass(){
-	  var options = {frequency: 100};
-	  if(compassTimerId) navigator.compass.clearWatch(compassTimerId);
-            compassTimerId = navigator.compass.watchHeading(onSuccess, onError, options);
-	}
-
-	function onSuccess(heading){
-            //prevHeading = currentHeading;
-            currentHeading = heading.trueHeading >= 0 ? Math.round(heading.trueHeading) : Math.round(heading.magneticHeading);
-
-            //if(currentHeading == prevHeading) return;
-
-            updateHeading();
-        }
-
-        function onError(error){
-	  alert('onError!');
-            watchCompass();
-
-            if(prevCompassErrorCode && prevCompassErrorCode == error.code) return; 
-
-            var errorType;
-            switch(error.code){
-                case 1:
-                    errorType = "Compass not supported";
-                    break;
-                case 2:
-                    errorType = "Compass internal error";
-                    break;
-                default:
-                    errorType = "Unknown compass error";
-            }
-
-            $error.html("Error while retrieving compass heading: "+errorType);
-
-            if(!$error.is(":visible")){
-                $error.show();
-                $results.hide();
-            }
-
-            prevCompassErrorCode = error.code;
-        }
-	function updateHeading(){
-            //$heading.html(currentHeading);
-            updateDifference();
-        }
-
-        function updateDifference(){
-            var diff = 0 - currentHeading;
-            //$difference.html(diff);     
-	    prevHeading = currentHeading;
-            $arrow.css("-webkit-transform", "rotate("+diff+"deg)");         
-        }
-
-var track_id = '';      // Name/ID of the exercise
-var watch_id = null;    // ID of the geolocation
-var tracking_data = []; // Array containing GPS position objects
- 
-$("#startTracking_start").live('click', function(){
-     
-    // Start tracking the User
-    watch_id = navigator.geolocation.watchPosition(
-     
-        // Success
-        function(position){
-            tracking_data.push(position);
-        },
-         
-        // Error
-        function(error){
-            console.log(error);
-        },
-         
-        // Settings
-        { frequency: 3000, enableHighAccuracy: true });
-     
-    // Tidy up the UI
-    track_id = $("#track_id").val();
-     
-    $("#track_id").hide();
-     
-    $("#startTracking_status").html("Tracking workout: <strong>" + track_id + "</strong>");
-});
-
-$("#startTracking_stop").live('click', function(){
-   
-  // Stop tracking the user
-  navigator.geolocation.clearWatch(watch_id);
-   
-  // Save the tracking data
-  window.localStorage.setItem(track_id, JSON.stringify(tracking_data));
- 
-  // Reset watch_id and tracking_data 
-  var watch_id = null;
-  var tracking_data = null;
- 
-  // Tidy up the UI
-  $("#track_id").val("").show();
-   
-  $("#startTracking_status").html("Stopped tracking workout: <strong>" + track_id + "</strong>");
- 
-});
-
-$("#home_clearstorage_button").live('click', function(){
-    window.localStorage.clear();
-});
- 
-$("#home_seedgps_button").live('click', function(){
-    window.localStorage.setItem('Sample block', '[{"timestamp":1335700802000,"coords":{"heading":null,"altitude":null,"longitude":170.33488333333335,"accuracy":0,"latitude":-45.87475166666666,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700803000,"coords":{"heading":null,"altitude":null,"longitude":170.33481666666665,"accuracy":0,"latitude":-45.87465,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700804000,"coords":{"heading":null,"altitude":null,"longitude":170.33426999999998,"accuracy":0,"latitude":-45.873708333333326,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700805000,"coords":{"heading":null,"altitude":null,"longitude":170.33318333333335,"accuracy":0,"latitude":-45.87178333333333,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700806000,"coords":{"heading":null,"altitude":null,"longitude":170.33416166666666,"accuracy":0,"latitude":-45.871478333333336,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700807000,"coords":{"heading":null,"altitude":null,"longitude":170.33526833333332,"accuracy":0,"latitude":-45.873394999999995,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700808000,"coords":{"heading":null,"altitude":null,"longitude":170.33427333333336,"accuracy":0,"latitude":-45.873711666666665,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700809000,"coords":{"heading":null,"altitude":null,"longitude":170.33488333333335,"accuracy":0,"latitude":-45.87475166666666,"speed":null,"altitudeAccuracy":null}}]');
- 
-});
-
-// When the user views the history page
-$('#history').live('pageshow', function () {
-   
-  // Count the number of entries in localStorage and display this information to the user
-  tracks_recorded = window.localStorage.length;
-  $("#tracks_recorded").html("<strong>" + tracks_recorded + "</strong> workout(s) recorded");
-   
-  // Empty the list of recorded tracks
-  $("#history_tracklist").empty();
-   
-  // Iterate over all of the recorded tracks, populating the list
-  for(i=0; i<tracks_recorded; i++){
-    $("#history_tracklist").append("<li><a href='#track_info' data-ajax='false'>" + window.localStorage.key(i) + "</a></li>");
-  }
-   
-  // Tell jQueryMobile to refresh the list
-  $("#history_tracklist").listview('refresh');
- 
-});
-
-$("#history_tracklist li a").live('click', function(){
- 
-  $("#track_info").attr("track_id", $(this).text());
-   
-});
- 
-// When the user views the Track Info page
-$('#track_info').live('pageshow', function(){
- 
-  // Find the track_id of the workout they are viewing
-  var key = $(this).attr("track_id");
-   
-  // Update the Track Info page header to the track_id
-  $("#track_info div[data-role=header] h1").text(key);
-   
-  // Get all the GPS data for the specific workout
-  var data = window.localStorage.getItem(key);
-   
-  // Turn the stringified GPS data back into a JS object
-  data = JSON.parse(data);
-
-  </script>
-
-    </head>
-    <body>
-<div data-role="page" id="home">
- 
-  <div data-role="header">
-   
-    <h1>Home</h1>
-   
-    <div data-role="navbar">
-      <ul>
-        <li><a href="#home" data-transition="none" data-icon="home">Home</a></li>
-        <li><a href="#startTracking" data-transition="none" data-icon="plus">Track Route</a></li>
-        <li><a href="#history" data-transition="none" data-icon="star">History</a></li>
-	<!--<li> <div id="arrow"></div></li>-->
-      </ul>
-    </div>
-  </div>
- 
-  <div data-role="content">
-    <p>Test tracker</p>
-    <button id="home_network_button" data-icon="check">Internet Access Enabled</button>
-    <button id="home_clearstorage_button">Clear local storage</button>
-    <button id="home_seedgps_button">Load Seed GPS Data</button>
- <!--<img id="arrow" src="img/Black_Down_Arrow.png"/>-->
-  </div>
- 
- 
-</div><!--end div home-->
-
-<div data-role="page" id="startTracking">
- 
-  <div data-role="header">
-    <h1>Track Workout</h1>
-     
-    <div data-role="navbar">
-      <ul>
-        <li><a href="#home" data-transition="none" data-icon="home">Home</a></li>
-        <li><a href="#startTracking" data-transition="none" data-icon="plus">Track Workout</a></li>
-        <li><a href="#history" data-transition="none" data-icon="star">History</a></li>
-	<!--<li> <div id="arrow" data-role="content"></div></li>-->
-      </ul>
-    </div>
-  </div>
- 
-  <div data-role="content"> 
-    <p id="startTracking_status"></p>
-      <div data-role="fieldcontain" class="ui-hide-label">
-        <label for="track_id">Track ID/Name:</label>
-        <input type="text" name="track_id" id="track_id" placeholder="Workout ID/Name"/>
-      </div>
- 
-    <button data-role="button" id="startTracking_start">Start Tracking</button>
-    <button data-role="button" id="startTracking_stop">Stop Tracking</button>  
-     
-        <p id="startTracking_debug"></p>
-<!--<img id="arrow" src="img/Black_Down_Arrow.png"/>-->
-         
-  </div>
- 
- 
-</div><!--end div startTracking-->
-<div data-role="page" id="history">
- 
-    <div data-role="header">
-        <h1>History</h1>
-         
-        <div data-role="navbar">
-            <ul>
-                <li><a href="#home" data-transition="none" data-icon="home">Home</a></li>
-                <li><a href="#startTracking" data-transition="none" data-icon="plus">Track Workout</a></li>
-                <li><a href="#history" data-transition="none" data-icon="star">History</a></li>
-            </ul>
-        </div>
-    </div>
- 
-    <div data-role="content"> 
-        <p id="tracks_recorded"></p>
-         
-        <ul data-role="listview" id="history_tracklist">
- 
-        </ul>
-    </div>
- 
- 
-</div>
-
-<div data-role="page" id="track_info">
- <script type="text/javascript">
-// Set the initial Lat and Long of the Google Map
-var myLatLng = new google.maps.LatLng(data[0].coords.latitude, data[0].coords.longitude);
- 
-// Google Map options
-var myOptions = {
-  zoom: 15,
-  center: myLatLng,
-  mapTypeId: google.maps.MapTypeId.ROADMAP
-};
- 
-// Create the Google Map, set options
-var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-var trackCoords = [];
- 
-// Add each GPS entry to an array
-for(i=0; i<data.length; i++){
-    trackCoords.push(new google.maps.LatLng(data[i].coords.latitude, data[i].coords.longitude));
-}
- 
-// Plot the GPS entries as a line on the Google Map
-var trackPath = new google.maps.Polyline({
-  path: trackCoords,
-  strokeColor: "#FF0000",
-  strokeOpacity: 1.0,
-  strokeWeight: 2
-});
- 
-// Apply the line to the map
-trackPath.setMap(map);
-</script>
-
-  <div data-role="header">
-    <h1>Viewing Single Workout</h1>
-     
-    <div data-role="navbar">
-      <ul>
-        <li><a href="#home" data-transition="none" data-icon="home">Home</a></li>
-        <li><a href="#startTracking" data-transition="none" data-icon="plus">Track Workout</a></li>
-        <li><a href="#history" data-transition="none" data-icon="star">History</a></li>
-      </ul>
-    </div>
-  </div>
- 
-  <div data-role="content"> 
-    <p id="track_info_info"></p>
-     
-    <div id="map_canvas" style="position:absolute;bottom:0;left:0;width:100%;height:300px;"></div>
-     
-  </div>
- 
- 
-</div>
-    </body>
+		</div><!-- /page -->
+	</body>
 </html>
