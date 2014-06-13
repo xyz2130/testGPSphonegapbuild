@@ -55,19 +55,23 @@ function loadMap()
 			center: new google.maps.LatLng(-40.9333,172.9500),
 			mapTypeId: google.maps.MapTypeId.HYBRID
 			});
+			
 	if(navigator.geolocation)
 	{
 		browserSupportFlag = true;
+		
 		// Get your the latest geolocation data from the user's device
 		navigator.geolocation.getCurrentPosition(function(position) {
-			
+			alert('say');
 			// Create the Google Maps API location object
 			var myLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+			
 			// Tell the map to center on the user's location
 			map.setCenter(myLocation);
 			map.setZoom(20);
 			map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
 			// Make the user's marker object and put it on the map
+			
 			var markerYou = new google.maps.Marker({
 				position: myLocation, 
 				map: map, 
@@ -97,6 +101,7 @@ function loadMap()
 			});
 		}, function() {
 			// If the device has a GPS, but still can't be located...
+			alert('can\'t locate GPS');
 			handleNoGeolocation(browserSupportFlag);
 		});
 	}
@@ -216,11 +221,31 @@ function drawPath(data){
 
 $("#view_track").live('click',function(){
   // create dummy coords
-  var dummy_data = [{"timestamp":1335700802000,"coords":{"heading":null,"altitude":null,"longitude":170.33488333333335,"accuracy":0,"latitude":-45.87475166666666,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700803000,"coords":{"heading":null,"altitude":null,"longitude":170.33481666666665,"accuracy":0,"latitude":-45.87465,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700804000,"coords":{"heading":null,"altitude":null,"longitude":170.33426999999998,"accuracy":0,"latitude":-45.873708333333326,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700805000,"coords":{"heading":null,"altitude":null,"longitude":170.33318333333335,"accuracy":0,"latitude":-45.87178333333333,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700806000,"coords":{"heading":null,"altitude":null,"longitude":170.33416166666666,"accuracy":0,"latitude":-45.871478333333336,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700807000,"coords":{"heading":null,"altitude":null,"longitude":170.33526833333332,"accuracy":0,"latitude":-45.873394999999995,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700808000,"coords":{"heading":null,"altitude":null,"longitude":170.33427333333336,"accuracy":0,"latitude":-45.873711666666665,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700809000,"coords":{"heading":null,"altitude":null,"longitude":170.33488333333335,"accuracy":0,"latitude":-45.87475166666666,"speed":null,"altitudeAccuracy":null}}];
+  var dummy_data = [{"timestamp":1335700802000,"coords":{"heading":null,"altitude":null,"longitude":170.33488333333335,
+    "accuracy":0,"latitude":-45.87475166666666,"speed":null,"altitudeAccuracy":null}},
+    {"timestamp":1335700803000,"coords":{"heading":null,"altitude":null,"longitude":170.33481666666665,"accuracy":0,
+      "latitude":-45.87465,"speed":null,"altitudeAccuracy":null}},
+      {"timestamp":1335700804000,"coords":{"heading":null,"altitude":null,
+	"longitude":170.33426999999998,"accuracy":0,"latitude":-45.873708333333326,
+	"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700805000,
+	  "coords":{"heading":null,"altitude":null,"longitude":170.33318333333335,
+	    "accuracy":0,"latitude":-45.87178333333333,"speed":null,"altitudeAccuracy":null}},
+	    {"timestamp":1335700806000,"coords":{"heading":null,"altitude":null,
+	      "longitude":170.33416166666666,"accuracy":0,"latitude":-45.871478333333336,
+	      "speed":null,"altitudeAccuracy":null}},{"timestamp":1335700807000,
+		"coords":{"heading":null,"altitude":null,"longitude":170.33526833333332,
+		  "accuracy":0,"latitude":-45.873394999999995,"speed":null,
+		  "altitudeAccuracy":null}},{"timestamp":1335700808000,"coords":{"heading":null,
+		    "altitude":null,"longitude":170.33427333333336,"accuracy":0,
+		    "latitude":-45.873711666666665,"speed":null,"altitudeAccuracy":null}},
+		    {"timestamp":1335700809000,"coords":{"heading":null,"altitude":null,
+		      "longitude":170.33488333333335,"accuracy":0,"latitude":-45.87475166666666,
+		      "speed":null,"altitudeAccuracy":null}}];
   
   var tracks_recorded = window.localStorage.length;
   
   if(tracks_recorded !=0){
+    alert(tracks_recorded);
       for(i=0; i<tracks_recorded; i++){
 	var key = window.localStorage.key(i);
 	
@@ -292,10 +317,7 @@ $("#clearstorage_button").live('click', function(){
   window.localStorage.clear();
 });
 
-$("#home_seedgps_button").live('click', function(){
-  window.localStorage.setItem('Sample block', '[{"timestamp":1335700802000,"coords":{"heading":null,"altitude":null,"longitude":170.33488333333335,"accuracy":0,"latitude":-45.87475166666666,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700803000,"coords":{"heading":null,"altitude":null,"longitude":170.33481666666665,"accuracy":0,"latitude":-45.87465,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700804000,"coords":{"heading":null,"altitude":null,"longitude":170.33426999999998,"accuracy":0,"latitude":-45.873708333333326,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700805000,"coords":{"heading":null,"altitude":null,"longitude":170.33318333333335,"accuracy":0,"latitude":-45.87178333333333,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700806000,"coords":{"heading":null,"altitude":null,"longitude":170.33416166666666,"accuracy":0,"latitude":-45.871478333333336,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700807000,"coords":{"heading":null,"altitude":null,"longitude":170.33526833333332,"accuracy":0,"latitude":-45.873394999999995,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700808000,"coords":{"heading":null,"altitude":null,"longitude":170.33427333333336,"accuracy":0,"latitude":-45.873711666666665,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700809000,"coords":{"heading":null,"altitude":null,"longitude":170.33488333333335,"accuracy":0,"latitude":-45.87475166666666,"speed":null,"altitudeAccuracy":null}}]');
-  
-});
+
 
 // When the user views the history page
 $('#history').live('pageshow', function () {
