@@ -62,7 +62,7 @@ function loadMap()
 		
 		// Get your the latest geolocation data from the user's device
 		navigator.geolocation.getCurrentPosition(function(position) {
-			alert('say');
+			alert('check1');
 			// Create the Google Maps API location object
 			var myLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
 			
@@ -101,7 +101,7 @@ function loadMap()
 			});
 		}, function() {
 			// If the device has a GPS, but still can't be located...
-			alert('can\'t locate GPS');
+			alert('Can\'t locate GPS');
 			handleNoGeolocation(browserSupportFlag);
 		});
 	}
@@ -245,7 +245,7 @@ $("#view_track").live('click',function(){
   var tracks_recorded = window.localStorage.length;
   
   if(tracks_recorded !=0){
-    alert(tracks_recorded);
+    alert('tracks recorded '+tracks_recorded);
       for(i=0; i<tracks_recorded; i++){
 	var key = window.localStorage.key(i);
 	
@@ -295,7 +295,7 @@ $("#view_track").live('click',function(){
   var myLatLng = new google.maps.LatLng(dummy_data[0].coords.latitude, dummy_data[0].coords.longitude);
   
   // Google Map options
-  alert("yo");
+  //alert("yo");
   console.log("yoyo");
   var myOptions = {
     zoom: 15,
