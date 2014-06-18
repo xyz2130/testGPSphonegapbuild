@@ -29,13 +29,15 @@
 				<h1><img src="img/world.png"></h1>
 			</div><!-- /header -->
     <button onclick="capturePhoto();">Capture Photo</button> <br>
-    <button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
     <button onclick="getPhoto();">From Photo Library</button><br>
     <button onclick="getPhoto();">From Photo Album</button><br>
 
-
-    <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
-    <img style="display:none;" id="largeImage" src="" />
+<div style="width:100%;height:35%;" >
+    <img style="display:none;width:100%;height:100%;" id="smallImage" src="" />
+    <img style="display:none;width:100%;height:100%" id="largeImage" src="" />
+	</div>
+	<button onclick="">Share photo</button> <br>
+    <button onclick="deletePhoto();">Delete photo</button> <br>
     </div>
   </body>
 </html>

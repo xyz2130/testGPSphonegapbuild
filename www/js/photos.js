@@ -22,19 +22,54 @@ function isIOS() {
     }
     return false;
 }
-    
+    // Get current position
+	//
+	function currentPosition(){
+		var flag = new Boolean();
+		
+		if(navigator.geolocation){
+			flag = true;
+			
+			//get current location
+			navigator.geolocation.getCurrentPosition(function(pos){
+				return pos;
+			}, function(){
+				//has GPS but not working...
+				errorGeolocation(flag);
+			});
+		}
+		else {
+			//device has no GPS
+			flag = false;
+			errorGeolocation(flag);
+		}
+		
+		function errorGeolocation(errFlag){
+			if (errFlag == true)
+			{
+				alert("Geolocation service failed.");
+			}
+			else
+			{
+				alert("Your device does not support geolocation.");
+			}
+		}
+		alert('return null');
+		return '';
+	}
+	
+	
     ////////////////////////////////////////////////
     // phonegap camera code template from
     // http://docs.phonegap.com/en/2.5.0/cordova_camera_camera.md.html
     // API: https://github.com/apache/cordova-plugin-camera/blob/master/doc/index.md
     ////////////////////////////////////////////////
     
-    //var pictureSource;   // picture source
-    
     // Wait for Cordova to connect with the device
     //
     document.addEventListener("deviceready",onDeviceReady,false);
 
+	var photoURI;
     var options;
     // Cordova is ready to be used!
     //
@@ -43,19 +78,18 @@ function isIOS() {
 			destinationType : Camera.DestinationType.FILE_URI,
 			sourceType : Camera.PictureSourceType.CAMERA,
 			allowEdit: true,
+			correctOrientation: true,
 			encodingType: Camera.EncodingType.JPG,
 			saveToPhotoAlbum: true };
-			
-	capturePhoto();
+		
+		photoURI = '';
+	//capturePhoto();
 			
     }
 
-    // Called when a photo is successfully retrieved
-    //
-    function onPhotoURISuccess(imageURI) {
-      // Uncomment to view the image file URI 
-      // console.log(imageURI);
-alert('GET!!');
+	// display photo on the page
+	function showPhoto(imageURI){
+	
       // Get image handle
       //
       var largeImage = document.getElementById('largeImage');
@@ -68,34 +102,178 @@ alert('GET!!');
       // The inline CSS rules are used to resize the image
       //
       largeImage.src = imageURI;
+	  
+	  
+	}
+	
+	// Retrieve and save current GPS location to the given photo
+	//
+	function savePhotoData(imageURI,shared){
+		//retrieve saved photo coords
+		var photos = window.localStorage.getItem("photos");
+		if(photos!=''){
+			photos = JSON.parse(photos);
+		}
+		else{
+			photos = {};
+		}
+		
+		//get current GPS location
+		var pos = currentPosition();
+		if(pos!=''){
+			photos[imageURI].coords = pos;
+		}
+		else{
+			photos[imageURI].coords = '';
+		}
+		
+		photos[imageURI].URI = imageURI;
+		photos[imageURI].shared = shared;
+		window.localStorage.setItem("photos",JSON.stringify(photos));
+	}
+	
+    // Called when a photo is successfully retrieved
+    //
+    function onTakePhotoSuccess(imageURI) {
+		alert('GET!!');
+		photoURI = imageURI;
+     
+		//display photo
+		showPhoto(imageURI);
+		
+		//save photo coords
+		savePhotoData(imageURI,false);
+		
     }
-
+	
+	function onGetPhotoSuccess(imageURI){
+		alert('Get!!!');
+		photoURI = imageURI;
+		
+		//display photo
+		showPhoto(imageURI);
+		
+	}
     // A button will call this function
     //
     function capturePhoto() {
       // Take picture using device camera and retrieve image as base64-encoded string
       options.sourceType = Camera.PictureSourceType.CAMERA;
-      navigator.camera.getPicture(onPhotoURISuccess, onFail, options);
+	  options.saveToPhotoAlbum = true;
+      navigator.camera.getPicture(onTakePhotoSuccess, onFail, options);
     }
-
-    // A button will call this function
-    //
-    function capturePhotoEdit() {
-      // Take picture using device camera, allow edit
-      options.sourceType = Camera.PictureSourceType.CAMERA;
-      navigator.camera.getPicture(onPhotoDataSuccess, onFail, options);
-    }
-
+   
     // A button will call this function
     //
     function getPhoto() {
       // Retrieve image file location from specified source
       options.sourceType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
-      navigator.camera.getPicture(onPhotoURISuccess, onFail, options);
+	  options.saveToPhotoAlbum = false;
+      navigator.camera.getPicture(onGetPhotoSuccess, onFail, options);
     }
 
     // Called if something bad happens.
     // 
     function onFail(message) {
       alert('Failed because: ' + message);
+	  photoURI = '';
     }
+	
+	//delete image
+	function deletePhoto(){
+		if(photoURI != '' && photoURI != null){
+			alert('deleting photo '+photoURI);
+			window.resolveLocalFileSystemURI(photoURI, resSuccess, resFail);
+		}
+	}
+	
+	function resSuccess(fileEntry){
+		alert('deleting file '+fileEntry.name);
+		fileEntry.remove(rmSuccess,rmFail);
+	}
+	
+	function resFail(message){
+		console.log('resolveFileSystemURI failed: '+message.code);
+	}
+	
+	function rmSuccess(){
+		  alert('image deleted');
+		  //remove photo coords from localStorage
+		  var photos = window.localStorage.getItem("photos");
+		  if(photos!=''){
+			photos = JSON.parse(photos);
+			if(photos[photoURI]!=''){
+				delete photos[photoURI];
+				window.localStorage.setItem("photos",JSON.stringify(photos));
+			}
+		  }
+		  
+		  // Get image handle
+		  //
+		  var largeImage = document.getElementById('largeImage');
+
+		  // hide image elements
+		  //
+		  largeImage.style.display = 'none';
+
+		  //reset values
+		  largeImage.src = '';
+		  photoURI = '';
+	}
+	
+	function rmFail(message){
+		alert('image delete failed '+message.code);
+	}
+	
+	/////////////////////////////////////////////////////
+	// upload photo code template from:
+	// http://docs.phonegap.com/en/3.1.0/cordova_file_file.md.html#FileTransfer
+	/////////////////////////////////////////////////////
+	function uploadPhoto(){
+		if(photoURI!=''){
+			//get photoURI's photo coords, if any
+			var photos = window.localStorage.getItem("photos");
+			photos = JSON.parse(photos);
+			
+			var pos = photos[photoURI];
+			if(pos == ''){
+				//try to get current position
+				pos = currentPosition();
+				if(pos!=''){
+					//save photo coords
+					savePhotoData(imageURI,true);
+				}
+				else{
+					alert('upload photo error, no geolocation available!');
+					return;
+				}
+			}
+			//set upload options
+			var uploadOptions = new FileUploadOptions();
+			uploadOptions.fileKey="file";            
+			uploadOptions.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);            
+			uploadOptions.mimeType="image/jpeg";            
+			var params = {};            
+			params.coords = pos;            
+			//params.value2 = "param";            
+			uploadOptions.params = params;            
+			var ft = new FileTransfer();            
+			ft.upload(imageURI, encodeURI("http://some.server.com/upload.php"), win, fail, uploadOptions);
+
+		}
+	}
+	function win(r) {
+	console.log("Code = " + r.responseCode);
+	console.log("Response = " + r.response);
+	console.log("Sent = " + r.bytesSent);
+	}
+	function fail(error) {
+	alert("An error has occurred: Code = " + error.code);
+	console.log("upload error source " + error.source);
+	console.log("upload error target " + error.target);
+	}	
+	
+	//delete from server
+	function deleteFromServer(){
+	
+	}

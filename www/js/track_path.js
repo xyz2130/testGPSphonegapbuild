@@ -76,7 +76,7 @@ function loadMap()
 		
 		// Get your the latest geolocation data from the user's device
 		navigator.geolocation.getCurrentPosition(function(position) {
-			gpsEnabled = true
+			gpsEnabled = true;
 			// Create the Google Maps API location object
 			var myLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
 			
@@ -161,7 +161,7 @@ function loadMap()
 		      "speed":null,"altitudeAccuracy":null}}];
   
 // When the user views the Track Info page
-$(document).on('pageinit', function(){
+$(document).on('pageinit',function(){
   // Find the track_id of the workout they are viewing
   //var key = $(this).attr("track_id");
   
@@ -170,7 +170,7 @@ $(document).on('pageinit', function(){
   
   loadMap();
   var t = window.localStorage.getItem("tracks");
-  if(t!=''){
+  if(t!='' && t!=null){
     t = JSON.parse(t);
     t['dummy'] = dummy_data;
   }
