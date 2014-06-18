@@ -78,7 +78,7 @@ function isIOS() {
 			destinationType : Camera.DestinationType.FILE_URI,
 			sourceType : Camera.PictureSourceType.CAMERA,
 			allowEdit: true,
-			correctOrientation: true,
+			//correctOrientation: true,
 			encodingType: Camera.EncodingType.JPG,
 			saveToPhotoAlbum: true };
 		
