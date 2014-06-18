@@ -1,60 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta content="stuff, to, help, search, engines, not" name="keywords">
-<meta content="What this page is about." name="description">
-<meta content="Display Webcam Stream" name="title">
-<title>Camera</title>
-  
-<style>
-#container {
-    margin: 0px auto;
-    width: 720px;
-    height: 1280px;
-    border: 10px #333 solid;
-}
-#videoElement {
-    width: 720px;
-    height: 1280px;
-    background-color: #666;
-}
-</style>
-</head>
-  
-<body>
-<div id="container">
-    <video autoplay></video>
-<script>
-  var errorCallback = function(e) {
-    console.log('Reeeejected!', e);
-  };
-  // Not showing vendor prefixes.
-  navigator.getUserMedia({video: true, audio: true}, function(localMediaStream) {
-    var video = document.querySelector('video');
-    video.src = window.URL.createObjectURL(localMediaStream);
-    // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
-    // See crbug.com/110938.
-    video.onloadedmetadata = function(e) {
-      // Ready to go. Do some stuff.
-    };
-  }, errorCallback);
-</script>
-<script>
-navigator.getUserMedia  = navigator.getUserMedia ||
-                          navigator.webkitGetUserMedia ||
-                          navigator.mozGetUserMedia ||
-                          navigator.msGetUserMedia;
-var video = document.querySelector('video');
-if (navigator.getUserMedia) {
-  navigator.getUserMedia({audio: true, video: true}, function(stream) {
-    video.src = window.URL.createObjectURL(stream);
-  }, errorCallback);
-} else {
-  video.src = 'somevideo.webm'; // fallback.
-}
-     </script>
+  <head>
+    <title>Photo</title>
+
+    </script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
+
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/photoswipe.css" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.0.min.js"></script>
+    
+		<script type="text/javascript" src="js/klass.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.0.1.min.js"></script>
+		<script type="text/javascript" src="js/code.photoswipe.jquery-3.0.4.min.js"></script>
+		<script type="text/javascript" src="js/custom.js"></script>
+	
+		<script type="text/javascript" src="phonegap.js"></script>
+		<script type="text/javascript" src="js/photos.js"></script>
+  </head>
+  <body>
+    <div data-role="page" data-add-back-btn="true">
+			<div data-role="header" id="header">
+				<a href="index.html" data-role="button" data-inline="true" data-theme="a" rel="external"><img src="img/arrow_left_icon&24.png"></a>
+				<h1><img src="img/world.png"></h1>
+			</div><!-- /header -->
+    <button onclick="capturePhoto();">Capture Photo</button> <br>
+    <button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
+    <button onclick="getPhoto();">From Photo Library</button><br>
+    <button onclick="getPhoto();">From Photo Album</button><br>
 
 
-</body>
+    <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
+    <img style="display:none;" id="largeImage" src="" />
+    </div>
+  </body>
 </html>
