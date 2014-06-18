@@ -35,10 +35,11 @@ function isIOS() {
     //
     document.addEventListener("deviceready",onDeviceReady,false);
 
+    var options;
     // Cordova is ready to be used!
     //
     function onDeviceReady() {
-        var options = { quality: 50,
+        options = { quality: 50,
 			destinationType : Camera.DestinationType.FILE_URI,
 			sourceType : Camera.PictureSourceType.CAMERA,
 			allowEdit: true,
