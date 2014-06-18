@@ -84,7 +84,7 @@ function isIOS() {
 			encodingType: Camera.EncodingType.JPG,
 			saveToPhotoAlbum: true };
 		
-		photoURI = '';
+		photoURI = null;
 	//capturePhoto();
 			
     }
@@ -178,7 +178,7 @@ function isIOS() {
     // 
     function onFail(message) {
       alert('Failed because: ' + message);
-	  photoURI = '';
+	  photoURI = null;
     }
 	
 	//delete image
@@ -195,7 +195,7 @@ function isIOS() {
 	}
 	
 	function resFail(message){
-		console.log('resolveFileSystemURI failed: '+message.code);
+		console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
 	}
 	
 	function rmSuccess(){
@@ -212,19 +212,20 @@ function isIOS() {
 		  
 		  // Get image handle
 		  //
-		  var largeImage = document.getElementById('largeImage');
+		  // var largeImage = document.getElementById('largeImage');
 
 		  // hide image elements
 		  //
-		  largeImage.style.display = 'none';
-
+		  // largeImage.style.display = 'none';
+			$('#largeImage').hide();
 		  //reset values
-		  largeImage.src = '';
-		  photoURI = '';
+		  // largeImage.src = '';
+		  photoURI = null;
 	}
 	
 	function rmFail(message){
 		alert('image delete failed: '+getFileErrMsg(message.code));
+		photoURI=null;
 	}
 	
 	function getFileErrMsg(code){
@@ -274,7 +275,7 @@ function isIOS() {
 	// http://docs.phonegap.com/en/3.1.0/cordova_file_file.md.html#FileTransfer
 	/////////////////////////////////////////////////////
 	function uploadPhoto(){
-		if(photoURI!=''){
+		if(photoURI!='' && photoURI!=null){
 			//get photoURI's photo coords, if any
 			var photos = window.localStorage.getItem("photos");
 			photos = JSON.parse(photos);
@@ -285,7 +286,7 @@ function isIOS() {
 				pos = currentPosition();
 				if(pos!=''){
 					//save photo coords
-					savePhotoData(imageURI,true);
+					savePhotoData(photoURI,true);
 				}
 				else{
 					alert('upload photo error, no geolocation available!');
@@ -295,14 +296,14 @@ function isIOS() {
 			//set upload options
 			var uploadOptions = new FileUploadOptions();
 			uploadOptions.fileKey="file";            
-			uploadOptions.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);            
+			uploadOptions.fileName=photoURI.substr(photoURI.lastIndexOf('/')+1);            
 			uploadOptions.mimeType="image/jpeg";            
 			var params = {};            
 			params.coords = pos;            
 			//params.value2 = "param";            
 			uploadOptions.params = params;            
 			var ft = new FileTransfer();            
-			ft.upload(imageURI, encodeURI("http://some.server.com/upload.php"), win, fail, uploadOptions);
+			ft.upload(photoURI, encodeURI("http://some.server.com/upload.php"), win, fail, uploadOptions);
 
 		}
 	}
