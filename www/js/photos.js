@@ -162,6 +162,7 @@ function isIOS() {
       // Take picture using device camera and retrieve image as base64-encoded string
       options.sourceType = Camera.PictureSourceType.CAMERA;
 	  options.saveToPhotoAlbum = true;
+	  options.allowEdit=true;
       navigator.camera.getPicture(onTakePhotoSuccess, onFail, options);
     }
    
@@ -171,6 +172,7 @@ function isIOS() {
       // Retrieve image file location from specified source
       options.sourceType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
 	  options.saveToPhotoAlbum = false;
+	  options.allowEdit = false;
       navigator.camera.getPicture(onGetPhotoSuccess, onFail, options);
     }
 
