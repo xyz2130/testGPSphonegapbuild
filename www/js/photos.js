@@ -149,7 +149,7 @@ function isIOS() {
     }
 	
 	function onGetPhotoSuccess(imageURI){
-		alert('Get!!!');
+		alert('Get!!! '+imageURI);
 		photoURI = imageURI;
 		
 		//display photo
