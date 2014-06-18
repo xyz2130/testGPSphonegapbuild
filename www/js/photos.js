@@ -54,7 +54,7 @@ function isIOS() {
     function onPhotoURISuccess(imageURI) {
       // Uncomment to view the image file URI 
       // console.log(imageURI);
-
+alert('GET!!');
       // Get image handle
       //
       var largeImage = document.getElementById('largeImage');
