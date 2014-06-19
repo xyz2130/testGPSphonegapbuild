@@ -113,6 +113,14 @@ function isIOS() {
 	function savePhotoData(imageURI,shared){
 		//retrieve saved photo coords
 		var photos = window.localStorage.getItem("photos");
+		var lastmoddate;
+		window.resolveLocalFileSystemURI(imageURI, function(entry){
+			var metadata = entry.getMetadata(function (metadata){
+				lastmoddate = metadata.modificationTime;
+			},null);
+		}, function(message){
+			console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
+		});
 		if(photos!=''){
 			photos = JSON.parse(photos);
 		}
@@ -123,7 +131,10 @@ function isIOS() {
 		//get current GPS location
 		var pos = currentPosition();
 		if(pos!=''){
+			var d = new Date();
+			
 			photos[imageURI].coords = pos;
+			photos[imageURI].posDate = d.getTime();
 		}
 		else{
 			photos[imageURI].coords = '';
@@ -131,6 +142,11 @@ function isIOS() {
 		
 		photos[imageURI].URI = imageURI;
 		photos[imageURI].shared = shared;
+		
+		if(lastmoddate!=null){
+			alert('lastmodDate '+lastmoddate);
+			photos[imageURI].modDate = lastmoddate;
+		}
 		window.localStorage.setItem("photos",JSON.stringify(photos));
 	}
 	
@@ -141,6 +157,9 @@ function isIOS() {
 		photoURI = imageURI;
      
 		//display photo
+		$('#imgContainer').show();
+		$('#share').show();
+
 		showPhoto(imageURI);
 		
 		//save photo coords
@@ -153,6 +172,9 @@ function isIOS() {
 		photoURI = imageURI;
 		
 		//display photo
+		$('#imgContainer').show();
+		$('#share').show();
+		$('#del').show();
 		showPhoto(imageURI);
 		
 	}
@@ -209,6 +231,9 @@ function isIOS() {
 					alert('image delete failed: '+getFileErrMsg(message.code));
 				});
 				delete photoURI;
+				$('#imgContainer').hide();
+				$('#share').hide();
+				$('#del').hide();
 			}, function (message){
 				console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
 			});
@@ -244,7 +269,9 @@ function isIOS() {
 		  // hide image elements
 		  //
 		  // largeImage.style.display = 'none';
-			$('#largeImage').hide();
+			$('#imgContainer').hide();
+			$('#share').hide();
+			$('#del').hide();
 		  //reset values
 		  // largeImage.src = '';
 		  //photoURI = null;
@@ -323,7 +350,7 @@ function isIOS() {
 			//set upload options
 			var uploadOptions = new FileUploadOptions();
 			uploadOptions.fileKey="file";            
-			uploadOptions.fileName=photoURI.substr(photoURI.lastIndexOf('/')+1);            
+			//uploadOptions.fileName=photoURI.substr(photoURI.lastIndexOf('/')+1);            
 			uploadOptions.mimeType="image/jpeg";            
 			var params = {};            
 			params.coords = pos;            

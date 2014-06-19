@@ -32,12 +32,12 @@
     <button onclick="getPhoto();">From Photo Library</button><br>
     <button onclick="getPhoto();">From Photo Album</button><br>
 
-<div style="width:100%;height:35%;" >
+<div id = "imgContainer" style="width:100%;height:25%;" >
     <img style="display:none;width:100%;height:100%;" id="smallImage" src="" />
     <img style="width:100%;" id="largeImage" src="" />
 	</div>
-	<button onclick="">Share photo</button> <br>
-    <button onclick="deletePhoto();">Delete photo</button> <br>
+	<button id="share" onclick="">Share photo</button> <br>
+    <button id="del" onclick="deletePhoto();">Delete photo</button> <br>
     </div>
   </body>
 </html>
