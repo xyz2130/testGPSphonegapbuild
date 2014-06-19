@@ -125,26 +125,28 @@ function isIOS() {
 						else{
 							photos = {};
 						}
-						
+						alert('something1');
 						//get current GPS location
 						var pos = currentPosition();
 						if(pos!=''){
 							var d = new Date();
-							
+							alert('something2');
 							photos[imageURI].coords = pos;
 							photos[imageURI].posDate = d.getTime();
 						}
 						else{
+						alert('something3');
 							photos[imageURI].coords = '';
 						}
-						
+						alert('something4');
 						photos[imageURI].URI = imageURI;
 						photos[imageURI].shared = shared;
-						
+						alert('something5');
 						if(lastmoddate!=null){
 							alert('lastmodDate '+lastmoddate);
 							photos[imageURI].modDate = lastmoddate;
 						}
+						alert('something6');
 						window.localStorage.setItem("photos",JSON.stringify(photos));
 			},null);
 		}, function(message){
