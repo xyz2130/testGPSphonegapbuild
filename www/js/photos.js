@@ -225,7 +225,7 @@ function isIOS() {
 				fileEntry.getMetadata(function (metadata){
 					entryLastMod = metadata.modificationTime;
 						alert('entrylastmod type '+typeof(entryLastMod));
-						alert('entrylastmod '+entryLastMod.getTime());
+						alert('entrylastmod '+entryLastMod);
 					},null);
 					fileEntry.remove(function (entry) {
 						alert('image deleted');
@@ -234,10 +234,7 @@ function isIOS() {
 						alert('image delete failed: '+getFileErrMsg(parseInt(message.code)));
 					});
 				delete photoURI;
-				$('#imgContainer').hide();
-				$('#share').hide();
-				$('#del').hide();
-				alert('after hide');
+				
 				// somehow the removeFail fires instead of removeSuccess which
 				// does not fire despite that the file is successfully removed
 				// so the associated photo data is deleted here, at URI resolve success
@@ -266,6 +263,10 @@ function isIOS() {
 						}
 					}
 				  }
+				  $('#imgContainer').hide();
+				$('#share').hide();
+				$('#del').hide();
+				alert('after hide');
 			}, function (message){
 				console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
 				alert('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
