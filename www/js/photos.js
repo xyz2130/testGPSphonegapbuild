@@ -121,7 +121,7 @@ function isIOS() {
 						alert('in save entrylastmod '+entryLastMod);
 						for(var m in metadata){
 							if(metadata.hasOwnProperty(m)) {alert(m);alert(metadata[m]);}
- 	}
+ 	
 						}
 			},null);
 		}, function(message){
