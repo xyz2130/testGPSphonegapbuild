@@ -75,7 +75,7 @@ function isIOS() {
     //
     function onDeviceReady() {
         options = { quality: 50,
-			destinationType : Camera.DestinationType.NATIVE_URI,
+			destinationType : Camera.DestinationType.FILE_URI,
 			sourceType : Camera.PictureSourceType.CAMERA,
 			targetWidth: 500,
 			targetHeight: 500,
@@ -115,7 +115,7 @@ function isIOS() {
 		var photos = window.localStorage.getItem("photos");
 		var lastmoddate;
 		window.resolveLocalFileSystemURI(imageURI, function(entry){
-			var metadata = entry.getMetadata(function (metadata){
+			entry.getMetadata(function (metadata){
 				lastmoddate = metadata.modificationTime;
 			},null);
 		}, function(message){
@@ -211,22 +211,16 @@ function isIOS() {
 	
 	//delete image
 	function deletePhoto(){
-		if(photoURI != '' && photoURI != null){
+		if(photoURI != null && photoURI != ''){
 			alert('deleting photo '+photoURI);
+			var photoEntry;
 			window.resolveLocalFileSystemURI(photoURI, function (fileEntry) {
 				alert('deleting file '+fileEntry.fullPath);
 				alert('file url '+fileEntry.toURL());
+				photoEntry = fileEntry;
 				fileEntry.remove(function (entry) {
 					alert('image deleted');
-				  //remove photo coords from localStorage
-				  var photos = window.localStorage.getItem("photos");
-				  if(photos!=''){
-					photos = JSON.parse(photos);
-					if(photos[photoURI]!=''){
-						delete photos[photoURI];
-						window.localStorage.setItem("photos",JSON.stringify(photos));
-					}
-				  }
+				  
 				},function(message){
 					alert('image delete failed: '+getFileErrMsg(message.code));
 				});
@@ -234,6 +228,38 @@ function isIOS() {
 				$('#imgContainer').hide();
 				$('#share').hide();
 				$('#del').hide();
+				
+				// somehow the removeSuccess (or removeFail for that matter)
+				// does not fire despite that the file is successfully removed
+				// so the associated photo data is deleted here, at URI resolve success
+				
+				//get photo data collection from localStorage
+				  var photos = window.localStorage.getItem("photos");
+				  if(photos!=null && photos!=''){
+					photos = JSON.parse(photos);
+					
+					//get last mod date from metadata
+					var entryLastMod;
+					photoEntry.getMetadata(function (metadata){
+						entryLastMod = metadata.modificationTime;
+					},null);
+					
+					if(entryLastMod!=null && entryLastMod!=''){
+						//find the photo with the same last mod time and delete
+						var pURI;
+						for(p in photos){
+							if(p.modDate.getTime() == entryLastMod.getTime()){
+								pURI = p;
+								break;
+							}
+						}
+					
+						if(pURI !=null && pURI!= ''){
+							delete photos[pURI.URI];
+							window.localStorage.setItem("photos",JSON.stringify(photos));
+						}
+					}
+				  }
 			}, function (message){
 				console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
 			});
@@ -324,6 +350,108 @@ function isIOS() {
         break; 
 		};
 	}
+	
+	function shareOnMap(){
+		if(photoURI != null && photoURI != ''){
+			alert('sharing photo '+photoURI);
+			var photoEntry;
+			window.resolveLocalFileSystemURI(photoURI, function (fileEntry) {
+				
+				photoEntry = fileEntry;
+				
+			}, function (message){
+				console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
+			});
+		
+			var photos = window.localStorage.getItem("photos");
+			  if(photos!=null && photos!=''){
+				photos = JSON.parse(photos);
+				
+				//get last mod date from metadata
+				var entryLastMod;
+				photoEntry.getMetadata(function (metadata){
+					entryLastMod = metadata.modificationTime;
+				},null);
+				
+				if(entryLastMod!=null && entryLastMod!=''){
+					//find the photo with the same last mod time
+					var pURI;
+					for(p in photos){
+						if(p.modDate.getTime() == entryLastMod.getTime()){
+							pURI = p;
+							break;
+						}
+					}
+					
+					if(pURI !=null && pURI!= ''){
+						var sharing = false;
+						
+						//check for photo's coord, if none, get the current one
+						if(pURI.coords == null || pURI.coords ==''){
+							alert('getting coords');
+							var pos = currentPosition();
+							
+							//save new coords to photo data
+							if(pos!=null && pos!= ''){
+								pURI.coords = pos;
+								sharing = true;
+								pURI.shared = true;
+								
+							}
+							else{
+								
+								sharing = false;
+							}
+						}
+						//coords already in photo data
+						else{
+							sharing = true;
+							pURI.shared = true;
+						}
+						
+						
+						if(sharing == true){
+							photos[pURI.URI] = pURI;
+							window.localStorage.setItem("photos",JSON.stringify(photos));
+							
+							//save to local storage to load on map
+							var sharedPhotos = window.localStorage.getItem("sharedPhotos");
+							if(sharedPhotos == null || sharedPhotos == ''){
+								sharedPhotos = {};
+							}
+							else{
+								sharedPhotos = JSON.parse(sharedPhotos);
+							}
+							sharedPhotos[pURI.URI] = pURI;
+							window.localStorage.setItem("sharedPhotos",JSON.stringify(sharedPhotos));
+							
+							//upload to server
+							//uploadPhoto();
+						}
+						else{
+							alert('share failed, no coords found');
+						}
+						
+					}
+					else{
+						alert('sharing failed: photo data not found');
+					}
+					
+				}
+				else{
+					alert('sharing failed: photo last date invalid');
+				}
+				
+			}
+			else{
+				alert('sharing failed: photo data collection invalid');
+			}
+		}
+		else{
+			alert('sharing failed: photoURI invalid');
+		}
+	}
+	
 	/////////////////////////////////////////////////////
 	// upload photo code template from:
 	// http://docs.phonegap.com/en/3.1.0/cordova_file_file.md.html#FileTransfer
@@ -374,5 +502,5 @@ function isIOS() {
 	
 	//delete from server
 	function deleteFromServer(){
-	
+		
 	}
