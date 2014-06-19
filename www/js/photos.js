@@ -354,6 +354,7 @@ function isIOS() {
 		msg = code;
         break; 
 		}
+		return msg;
 	}
 	
 	function shareOnMap(){
