@@ -119,6 +119,10 @@ function isIOS() {
 				lastmoddate = metadata.modificationTime;
 				alert('in save entrylastmod type '+typeof(entryLastMod));
 						alert('in save entrylastmod '+entryLastMod);
+						for(var m in metadata){
+							if(metadata.hasOwnProperty(m)) {alert(m);alert(metadata[m]);}
+ 	}
+						}
 			},null);
 		}, function(message){
 			console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
@@ -244,7 +248,7 @@ function isIOS() {
 					if(entryLastMod!=null && entryLastMod!=''){
 						//find the photo with the same last mod time and delete
 						var pURI;
-						for(p in photos){
+						for(var p in photos){
 						alert('for '+p.URI);
 							if(p.modDate.getTime() == entryLastMod.getTime()){
 								pURI = p;
@@ -386,7 +390,7 @@ function isIOS() {
 				if(entryLastMod!=null && entryLastMod!=''){
 					//find the photo with the same last mod time
 					var pURI;
-					for(p in photos){
+					for(var p in photos){
 						if(p.modDate.getTime() == entryLastMod.getTime()){
 							pURI = p;
 							break;
