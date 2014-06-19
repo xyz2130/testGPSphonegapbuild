@@ -159,6 +159,7 @@ function isIOS() {
 		//display photo
 		$('#imgContainer').show();
 		$('#share').show();
+		$('#del').hide();
 
 		showPhoto(imageURI);
 		
@@ -237,17 +238,19 @@ function isIOS() {
 				  var photos = window.localStorage.getItem("photos");
 				  if(photos!=null && photos!=''){
 					photos = JSON.parse(photos);
-					
+					alert('delete localstorage');
 					//get last mod date from metadata
 					var entryLastMod;
 					photoEntry.getMetadata(function (metadata){
 						entryLastMod = metadata.modificationTime;
+						alert('entrylastmod '+entryLastMod.getTime());
 					},null);
 					
 					if(entryLastMod!=null && entryLastMod!=''){
 						//find the photo with the same last mod time and delete
 						var pURI;
 						for(p in photos){
+						alert('for '+p.URI);
 							if(p.modDate.getTime() == entryLastMod.getTime()){
 								pURI = p;
 								break;
@@ -255,6 +258,7 @@ function isIOS() {
 						}
 					
 						if(pURI !=null && pURI!= ''){
+						alert('del local');
 							delete photos[pURI.URI];
 							window.localStorage.setItem("photos",JSON.stringify(photos));
 						}
@@ -262,6 +266,7 @@ function isIOS() {
 				  }
 			}, function (message){
 				console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
+				alert('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
 			});
 		}
 	}
@@ -310,7 +315,7 @@ function isIOS() {
 	
 	function getFileErrMsg(code){
 		var msg = '';       
-		switch (e.code)
+		switch (code)
 		{
 		case FileError.QUOTA_EXCEEDED_ERR: 
 		msg = 'QUOTA_EXCEEDED_ERR';
@@ -346,9 +351,9 @@ function isIOS() {
 		msg = 'PATH_EXISTS_ERR';
 		break;
         default:
-		msg = e.code;
+		msg = code;
         break; 
-		};
+		}
 	}
 	
 	function shareOnMap(){
