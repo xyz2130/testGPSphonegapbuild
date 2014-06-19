@@ -114,6 +114,7 @@ function loadMap()
     var icons_length = icons.length;
 
 	function placePhotos(){
+	alert('start sharing');
 		var sharedPhotos = window.localStorage("sharedPhotos");
 		if(sharedPhotos!=null && sharedPhotos!=''){
 			sharedPhotos = JSON.parse(sharedPhotos);
@@ -126,6 +127,7 @@ function loadMap()
 			var iconCounter = 0;
 			
 			for(p in sharedPhotos){
+				alert('in loop p: '+p.URI);
 				var content = "<div style='width:100%;'><img style='width:100%;' src='"+p.URI+"'/>some text </div>"
 				marker = new google.maps.Marker({
 					position: new google.maps.LatLng(p.coords.latitude, p.coords.longitude),
@@ -137,6 +139,7 @@ function loadMap()
 				
 				google.maps.event.addListener(marker,'click', function(marker,content) {
 					return function(){
+					alert('setcontent');
 						infowindow.setContent(content);
 						infowindow.open(map,marker);
 					}(marker,content)
