@@ -227,13 +227,7 @@ function isIOS() {
 						alert('entrylastmod type '+typeof(entryLastMod));
 						alert('entrylastmod '+entryLastMod);
 					},null);
-					fileEntry.remove(function (entry) {
-						alert('image deleted');
-					  
-					},function(message){
-						alert('image delete failed: '+getFileErrMsg(parseInt(message.code)));
-					});
-				delete photoURI;
+					
 				
 				// somehow the removeFail fires instead of removeSuccess which
 				// does not fire despite that the file is successfully removed
@@ -267,6 +261,13 @@ function isIOS() {
 				$('#share').hide();
 				$('#del').hide();
 				alert('after hide');
+				fileEntry.remove(function (entry) {
+						alert('image deleted');
+					  
+					},function(message){
+						alert('image delete failed: '+getFileErrMsg(parseInt(message.code)));
+					});
+				delete photoURI;
 			}, function (message){
 				console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
 				alert('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
