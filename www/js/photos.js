@@ -75,7 +75,7 @@ function isIOS() {
     //
     function onDeviceReady() {
         options = { quality: 50,
-			destinationType : Camera.DestinationType.FILE_URI,
+			destinationType : Camera.DestinationType.NATIVE_URI,
 			sourceType : Camera.PictureSourceType.CAMERA,
 			targetWidth: 500,
 			targetHeight: 500,
