@@ -137,7 +137,7 @@ function isIOS() {
     // Called when a photo is successfully retrieved
     //
     function onTakePhotoSuccess(imageURI) {
-		alert('GET!!');
+		alert('GET!! '+imageURI);
 		photoURI = imageURI;
      
 		//display photo
@@ -191,12 +191,31 @@ function isIOS() {
 	function deletePhoto(){
 		if(photoURI != '' && photoURI != null){
 			alert('deleting photo '+photoURI);
-			window.resolveLocalFileSystemURI(photoURI, resSuccess, resFail);
+			window.resolveLocalFileSystemURI(photoURI, function (fileEntry) {
+				alert('deleting file '+fileEntry.fullPath);
+				fileEntry.remove(function (entry) {
+					alert('image deleted');
+				  //remove photo coords from localStorage
+				  var photos = window.localStorage.getItem("photos");
+				  if(photos!=''){
+					photos = JSON.parse(photos);
+					if(photos[photoURI]!=''){
+						delete photos[photoURI];
+						window.localStorage.setItem("photos",JSON.stringify(photos));
+					}
+				  }
+				},function(message){
+					alert('image delete failed: '+getFileErrMsg(message.code));
+				});
+				delete photoURI;
+			}, function (message){
+				console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
+			});
 		}
 	}
 	
 	function resSuccess(fileEntry){
-		alert('deleting file '+fileEntry.name);
+		alert('deleting file '+fileEntry.fullPath);
 		fileEntry.remove(rmSuccess,rmFail);
 		delete photoURI;
 	}
