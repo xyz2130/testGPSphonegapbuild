@@ -107,58 +107,50 @@ function isIOS() {
 	  
 	  
 	}
-	function getLastModDate(fileURI){
-	return window.resolveLocalFileSystemURI(fileURI, function(entry){
-			 return entry.file(function (f){
-				var lastmoddate = f.lastModifiedDate;
-				alert('in save entrylastmod type '+typeof(lastmoddate));
-						alert('in save entrylastmod '+lastmoddate);
-						for(var m in f){
-						alert('traverse');
-							if(f.hasOwnProperty(m)) {alert(m);alert(f[m]);}
- 	
-						}
-				return lastmoddate;
-			},function(){return null;});
-		}, function(message){
-			console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
-			return null;
-		});
-	}
+	
 	// Retrieve and save current GPS location to the given photo
 	//
 	function savePhotoData(imageURI,shared){
 		//retrieve saved photo coords
 		var photos = window.localStorage.getItem("photos");
-		var lastmoddate = getLastModDate(imageURI);
 		
-		if(photos!=''){
-			photos = JSON.parse(photos);
-		}
-		else{
-			photos = {};
-		}
+		window.resolveLocalFileSystemURI(imageURI, function(entry){
+			entry.file(function (f){
+				var lastmoddate = f.lastModifiedDate;
+				alert('in save entrylastmod type '+typeof(lastmoddate));
+						alert('in save entrylastmod '+lastmoddate);
+						if(photos!=''){
+							photos = JSON.parse(photos);
+						}
+						else{
+							photos = {};
+						}
+						
+						//get current GPS location
+						var pos = currentPosition();
+						if(pos!=''){
+							var d = new Date();
+							
+							photos[imageURI].coords = pos;
+							photos[imageURI].posDate = d.getTime();
+						}
+						else{
+							photos[imageURI].coords = '';
+						}
+						
+						photos[imageURI].URI = imageURI;
+						photos[imageURI].shared = shared;
+						
+						if(lastmoddate!=null){
+							alert('lastmodDate '+lastmoddate);
+							photos[imageURI].modDate = lastmoddate;
+						}
+						window.localStorage.setItem("photos",JSON.stringify(photos));
+			},null);
+		}, function(message){
+			console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
+		});
 		
-		//get current GPS location
-		var pos = currentPosition();
-		if(pos!=''){
-			var d = new Date();
-			
-			photos[imageURI].coords = pos;
-			photos[imageURI].posDate = d.getTime();
-		}
-		else{
-			photos[imageURI].coords = '';
-		}
-		
-		photos[imageURI].URI = imageURI;
-		photos[imageURI].shared = shared;
-		
-		if(lastmoddate!=null){
-			alert('lastmodDate '+lastmoddate);
-			photos[imageURI].modDate = lastmoddate;
-		}
-		window.localStorage.setItem("photos",JSON.stringify(photos));
 	}
 	
     // Called when a photo is successfully retrieved
