@@ -117,6 +117,8 @@ function isIOS() {
 		window.resolveLocalFileSystemURI(imageURI, function(entry){
 			entry.getMetadata(function (metadata){
 				lastmoddate = metadata.modificationTime;
+				alert('in save entrylastmod type '+typeof(entryLastMod));
+						alert('in save entrylastmod '+entryLastMod);
 			},null);
 		}, function(message){
 			console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
