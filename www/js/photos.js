@@ -117,9 +117,10 @@ function isIOS() {
 		window.resolveLocalFileSystemURI(imageURI, function(entry){
 			entry.getMetadata(function (metadata){
 				lastmoddate = metadata.modificationTime;
-				alert('in save entrylastmod type '+typeof(entryLastMod));
-						alert('in save entrylastmod '+entryLastMod);
+				alert('in save entrylastmod type '+typeof(lastmoddate));
+						alert('in save entrylastmod '+lastmoddate);
 						for(var m in metadata){
+						alert('traverse');
 							if(metadata.hasOwnProperty(m)) {alert(m);alert(metadata[m]);}
  	
 						}
