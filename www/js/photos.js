@@ -107,16 +107,10 @@ function isIOS() {
 	  
 	  
 	}
-	
-	// Retrieve and save current GPS location to the given photo
-	//
-	function savePhotoData(imageURI,shared){
-		//retrieve saved photo coords
-		var photos = window.localStorage.getItem("photos");
-		var lastmoddate;
-		window.resolveLocalFileSystemURI(imageURI, function(entry){
-			entry.file(function (f){
-				lastmoddate = f.lastModifiedDate;
+	function getLastModDate(fileURI){
+	return window.resolveLocalFileSystemURI(fileURI, function(entry){
+			 return entry.file(function (f){
+				var lastmoddate = f.lastModifiedDate;
 				alert('in save entrylastmod type '+typeof(lastmoddate));
 						alert('in save entrylastmod '+lastmoddate);
 						for(var m in f){
@@ -124,10 +118,20 @@ function isIOS() {
 							if(f.hasOwnProperty(m)) {alert(m);alert(f[m]);}
  	
 						}
-			},null);
+				return lastmoddate;
+			},function(){return null;});
 		}, function(message){
 			console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
+			return null;
 		});
+	}
+	// Retrieve and save current GPS location to the given photo
+	//
+	function savePhotoData(imageURI,shared){
+		//retrieve saved photo coords
+		var photos = window.localStorage.getItem("photos");
+		var lastmoddate = getLastModDate(imageURI);
+		
 		if(photos!=''){
 			photos = JSON.parse(photos);
 		}
