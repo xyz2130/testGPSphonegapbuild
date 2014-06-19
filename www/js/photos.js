@@ -22,26 +22,46 @@ function isIOS() {
     }
     return false;
 }
+////////////////////////////////////////////////////////
+// deferred object explanation:
+// http://stackoverflow.com/questions/12116505/wait-till-a-function-is-finished-until-running-another-function
+// http://www.htmlgoodies.com/beyond/javascript/making-promises-with-jquery-deferred.html
+// http://sitr.us/2012/07/31/promise-pipelines-in-javascript.html
+////////////////////////////////////////////////////////
+
     // Get current position
 	//
 	function currentPosition(){
+		//start creating promise
+		var locationDefer = $.Deferred();
+		
 		var flag = new Boolean();
 		
 		if(navigator.geolocation){
 			flag = true;
 			
 			//get current location
-			navigator.geolocation.getCurrentPosition(function(pos){
-				return pos;
-			}, function(){
-				//has GPS but not working...
-				errorGeolocation(flag);
+			var geoPromise = navigator.geolocation.getCurrentPosition(function(pos){
+								return pos;
+							}, function(){
+								//has GPS but not working...
+								alert(1);
+								errorGeolocation(flag);
+								return '';
+							});
+			
+			geoPromise.then(function (position){
+				alert('return '+position);
+				locationDefer.resolve(position);
 			});
+			
 		}
 		else {
 			//device has no GPS
 			flag = false;
 			errorGeolocation(flag);
+			alert('return null');
+			locationDefer.resolve('');
 		}
 		
 		function errorGeolocation(errFlag){
@@ -53,9 +73,10 @@ function isIOS() {
 			{
 				alert("Your device does not support geolocation.");
 			}
+			
 		}
-		alert('return null');
-		return '';
+		
+		return locationDefer.promise();
 	}
 	
 	
@@ -128,26 +149,29 @@ function isIOS() {
 						alert('something1');
 						//get current GPS location
 						var pos = currentPosition();
-						if(pos!=''){
-							var d = new Date();
-							alert('something2');
-							photos[imageURI].coords = pos;
-							photos[imageURI].posDate = d.getTime();
-						}
-						else{
-						alert('something3');
-							photos[imageURI].coords = '';
-						}
-						alert('something4');
-						photos[imageURI].URI = imageURI;
-						photos[imageURI].shared = shared;
-						alert('something5');
-						if(lastmoddate!=null){
-							alert('lastmodDate '+lastmoddate);
-							photos[imageURI].modDate = lastmoddate;
-						}
-						alert('something6');
-						window.localStorage.setItem("photos",JSON.stringify(photos));
+						//wait for geolocation to finish
+						setTimeout(function(){
+							if(pos!=''){
+								var d = new Date();
+								alert('something2');
+								photos[imageURI].coords = pos;
+								photos[imageURI].posDate = d.getTime();
+							}
+							else{
+							alert('something3');
+								photos[imageURI].coords = '';
+							}
+							alert('something4');
+							photos[imageURI].URI = imageURI;
+							photos[imageURI].shared = shared;
+							alert('something5');
+							if(lastmoddate!=null){
+								alert('lastmodDate '+lastmoddate);
+								photos[imageURI].modDate = lastmoddate;
+							}
+							alert('something6');
+							window.localStorage.setItem("photos",JSON.stringify(photos));
+						},(3000));
 			},null);
 		}, function(message){
 			console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
