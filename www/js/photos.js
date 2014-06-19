@@ -193,7 +193,7 @@ function isIOS() {
 			alert('deleting photo '+photoURI);
 			window.resolveLocalFileSystemURI(photoURI, function (fileEntry) {
 				alert('deleting file '+fileEntry.fullPath);
-				alert('file url '+fileEntry.toURL);
+				alert('file url '+fileEntry.toURL());
 				fileEntry.remove(function (entry) {
 					alert('image deleted');
 				  //remove photo coords from localStorage
