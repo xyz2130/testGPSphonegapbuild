@@ -214,11 +214,18 @@ function isIOS() {
 	function deletePhoto(){
 		if(photoURI != null && photoURI != ''){
 			alert('deleting photo '+photoURI);
-			var photoEntry;
+			
+			
+			var entryLastMod;
+			
 			window.resolveLocalFileSystemURI(photoURI, function (fileEntry) {
 				alert('deleting file '+fileEntry.fullPath);
 				alert('file url '+fileEntry.toURL());
-				photoEntry = fileEntry;
+				//get last mod date from metadata
+				fileEntry.getMetadata(function (metadata){
+					entryLastMod = metadata.modificationTime;
+					alert('entrylastmod '+entryLastMod.getTime());
+				},null);
 				fileEntry.remove(function (entry) {
 					alert('image deleted');
 				  
@@ -239,12 +246,6 @@ function isIOS() {
 				  if(photos!=null && photos!=''){
 					photos = JSON.parse(photos);
 					alert('delete localstorage');
-					//get last mod date from metadata
-					var entryLastMod;
-					photoEntry.getMetadata(function (metadata){
-						entryLastMod = metadata.modificationTime;
-						alert('entrylastmod '+entryLastMod.getTime());
-					},null);
 					
 					if(entryLastMod!=null && entryLastMod!=''){
 						//find the photo with the same last mod time and delete
@@ -360,10 +361,13 @@ function isIOS() {
 	function shareOnMap(){
 		if(photoURI != null && photoURI != ''){
 			alert('sharing photo '+photoURI);
-			var photoEntry;
+			
+			var entryLastMod;	
 			window.resolveLocalFileSystemURI(photoURI, function (fileEntry) {
-				
-				photoEntry = fileEntry;
+				//get last mod date from metadata
+				fileEntry.getMetadata(function (metadata){
+					entryLastMod = metadata.modificationTime;
+				},null);
 				
 			}, function (message){
 				console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
@@ -373,11 +377,6 @@ function isIOS() {
 			  if(photos!=null && photos!=''){
 				photos = JSON.parse(photos);
 				
-				//get last mod date from metadata
-				var entryLastMod;
-				photoEntry.getMetadata(function (metadata){
-					entryLastMod = metadata.modificationTime;
-				},null);
 				
 				if(entryLastMod!=null && entryLastMod!=''){
 					//find the photo with the same last mod time
