@@ -115,13 +115,13 @@ function isIOS() {
 		var photos = window.localStorage.getItem("photos");
 		var lastmoddate;
 		window.resolveLocalFileSystemURI(imageURI, function(entry){
-			entry.getMetadata(function (metadata){
-				lastmoddate = metadata.modificationTime;
+			entry.file(function (f){
+				lastmoddate = f.lastModifiedDate;
 				alert('in save entrylastmod type '+typeof(lastmoddate));
 						alert('in save entrylastmod '+lastmoddate);
-						for(var m in metadata){
+						for(var m in f){
 						alert('traverse');
-							if(metadata.hasOwnProperty(m)) {alert(m);alert(metadata[m]);}
+							if(f.hasOwnProperty(m)) {alert(m);alert(f[m]);}
  	
 						}
 			},null);
