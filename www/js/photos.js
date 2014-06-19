@@ -159,7 +159,7 @@ function isIOS() {
 		//display photo
 		$('#imgContainer').show();
 		$('#share').show();
-		$('#del').hide();
+		//$('#del').hide();
 
 		showPhoto(imageURI);
 		
@@ -224,14 +224,15 @@ function isIOS() {
 				//get last mod date from metadata
 				fileEntry.getMetadata(function (metadata){
 					entryLastMod = metadata.modificationTime;
-					alert('entrylastmod '+entryLastMod.getTime());
-				},null);
-				fileEntry.remove(function (entry) {
-					alert('image deleted');
-				  
-				},function(message){
-					alert('image delete failed: '+getFileErrMsg(message.code));
-				});
+						alert('entrylastmod type '+typeof(entryLastMod));
+						alert('entrylastmod '+entryLastMod.getTime());
+					},null);
+					fileEntry.remove(function (entry) {
+						alert('image deleted');
+					  
+					},function(message){
+						alert('image delete failed: '+getFileErrMsg(parseInt(message.code)));
+					});
 				delete photoURI;
 				$('#imgContainer').hide();
 				$('#share').hide();
