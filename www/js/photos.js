@@ -163,6 +163,8 @@ function isIOS() {
       options.sourceType = Camera.PictureSourceType.CAMERA;
 	  options.saveToPhotoAlbum = true;
 	  options.allowEdit=true;
+	  options.targetWidth = 500;
+	  options.targetHeight = 500;
       navigator.camera.getPicture(onTakePhotoSuccess, onFail, options);
     }
    
@@ -173,6 +175,8 @@ function isIOS() {
       options.sourceType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
 	  options.saveToPhotoAlbum = false;
 	  options.allowEdit = false;
+	  delete options.targetWidth;
+	  delete options.targetHeight;
       navigator.camera.getPicture(onGetPhotoSuccess, onFail, options);
     }
 
@@ -180,7 +184,7 @@ function isIOS() {
     // 
     function onFail(message) {
       alert('Failed because: ' + message);
-	  photoURI = null;
+	  delete photoURI;
     }
 	
 	//delete image
@@ -194,6 +198,7 @@ function isIOS() {
 	function resSuccess(fileEntry){
 		alert('deleting file '+fileEntry.name);
 		fileEntry.remove(rmSuccess,rmFail);
+		delete photoURI;
 	}
 	
 	function resFail(message){
@@ -222,12 +227,12 @@ function isIOS() {
 			$('#largeImage').hide();
 		  //reset values
 		  // largeImage.src = '';
-		  photoURI = null;
+		  //photoURI = null;
 	}
 	
 	function rmFail(message){
 		alert('image delete failed: '+getFileErrMsg(message.code));
-		photoURI=null;
+		//photoURI=null;
 	}
 	
 	function getFileErrMsg(code){
