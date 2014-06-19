@@ -115,10 +115,15 @@ function loadMap()
 
 	function placePhotos(){
 	alert('start sharing');
-		var sharedPhotos = window.localStorage("sharedPhotos");
+	// var p = { URI:'content://media/external/images/media/19928',
+					 // coords: {longitude:170.33416166666666,latitude:-45.871478333333336},
+					 // shared: true,
+					 // };
+		var sharedPhotos = window.localStorage.getItem("sharedPhotos");
 		if(sharedPhotos!=null && sharedPhotos!=''){
+		alert('get saved data');
 			sharedPhotos = JSON.parse(sharedPhotos);
-			
+			alert('infowindow');
 			var infowindow = new google.maps.InfoWindow({
 				maxWidth: 200
 			});
@@ -137,12 +142,12 @@ function loadMap()
 				
 				markers.push(marker);
 				
-				google.maps.event.addListener(marker,'click', function(marker,content) {
-					return function(){
+				google.maps.event.addListener(marker,'click', function() {
+					
 					alert('setcontent');
 						infowindow.setContent(content);
 						infowindow.open(map,marker);
-					}(marker,content)
+					
 				});
 				
 				iconCounter++;
@@ -151,6 +156,7 @@ function loadMap()
 				}
 			}
 			function AutoCenter() {
+			alert('auto center');
 			  //  Create a new viewpoint bound
 			  var bounds = new google.maps.LatLngBounds();
 			  //  Go through each...
@@ -159,6 +165,7 @@ function loadMap()
 			  });
 			  //  Fit these bounds to the map
 			  map.fitBounds(bounds);
+			  map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
 			}
 			AutoCenter();
 
