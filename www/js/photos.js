@@ -247,9 +247,9 @@ function isIOS() {
 	
 	function getShared(imageURI){
 		var deferred = new $.Deferred();
-		alert('getshared');
+		// alert('getshared');
 		var photos = getLocalStorageObj("photos");
-		var pURI = getURIfromlocalStorage(imageURI);
+		var pURI = getURIfromLocalStorage(imageURI);
 		$.when(photos,pURI).done(function (photos,pURI){
 			var ret = false;
 			//entry exists in local storage
