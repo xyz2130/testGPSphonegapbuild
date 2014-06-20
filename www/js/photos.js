@@ -345,7 +345,7 @@ function isIOS() {
 					var pURI;
 					for(var p in photos){
 						if(photos.hasOwnProperty(p)){
-							alert('for '+p+', '+photos[p]);
+							alert('for '+p+', '+photos[p]+', '+photos[p].modDate);
 							if(photos[p].modDate == lastmoddate){
 								alert('get!!! '+p);
 								pURI = p;
