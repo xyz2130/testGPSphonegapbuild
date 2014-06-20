@@ -114,18 +114,18 @@ function loadMap()
     var icons_length = icons.length;
 
 	function placePhotos(){
-	alert('start sharing');
+	// alert('start sharing');
 	// var p = { URI:'content://media/external/images/media/19928',
 					 // coords: {longitude:170.33416166666666,latitude:-45.871478333333336},
 					 // shared: true,
 					 // };
 		var sharedPhotos = window.localStorage.getItem("sharedPhotos");
 		if(sharedPhotos!=null && sharedPhotos!=''){
-			alert('get saved data');
+			// alert('get saved data');
 			sharedPhotos = JSON.parse(sharedPhotos);
-			alert('infowindow');
+			// alert('infowindow');
 			var infowindow = new google.maps.InfoWindow({
-				maxWidth: 200
+				maxWidth: 150
 			});
 			var marker;
 			var markers = new Array();
@@ -133,8 +133,11 @@ function loadMap()
 			
 			for(p in sharedPhotos){
 				if(sharedPhotos.hasOwnProperty(p)){
-					alert('in loop p: '+sharedPhotos[p].URI);
-					var content = "<div style='width:100%;'><img style='width:100%;' src='"+sharedPhotos[p].URI+"'/>some text </div>"
+					// alert('in loop p: '+sharedPhotos[p].URI);
+					var contentStr = $('<div style="width:100%;"><img style="width:100%;"'+ 
+										'src="'+sharedPhotos[p].URI+'"/><br>by '+ p+'<br>'+
+										'<button name="un-Share" id="un-Share" class="un-Share">'+
+										'UnShare</button> </div>');
 					marker = new google.maps.Marker({
 						position: new google.maps.LatLng(sharedPhotos[p].coords.latitude, sharedPhotos[p].coords.longitude),
 						map: map,
@@ -143,13 +146,39 @@ function loadMap()
 					
 					markers.push(marker);
 					
-					google.maps.event.addListener(marker,'click', function() {
-						
-						alert('setcontent');
-							infowindow.setContent(content);
+					google.maps.event.addListener(marker,'click', (function(marker,c) {
+						return function(){
+						// alert('setcontent');
+							infowindow.setContent(c);
 							infowindow.open(map,marker);
-						
-					});
+						}
+					})(marker,contentStr[0]));
+					
+					var rmbtn = contentStr.find('.un-Share')[0];
+					google.maps.event.addDomListener(rmbtn,'click',(function(marker,pURI,sharedPhotos,markers){
+						return function(){
+						// alert('removing1');
+						alert(marker+' '+pURI+' '+sharedPhotos);
+							var photos = window.localStorage.getItem("photos");
+							if(photos!=null &&photos!=''){
+							// alert(photos);
+								photos = JSON.parse(photos);
+								// alert(photos);
+							}
+							// alert(sharedPhotos[pURI]+' '+photos[pURI]);
+							if(sharedPhotos[pURI]!=null && sharedPhotos[pURI]!=''){
+							// alert('removing');
+								delete sharedPhotos[pURI];
+								if(photos[pURI]!=null&& photos[pURI]!='' ){
+									photos[pURI].shared = false;
+									window.localStorage.setItem("photos",JSON.stringify(photos));
+								}
+								window.localStorage.setItem("sharedPhotos",JSON.stringify(sharedPhotos));
+								marker.setMap(null);
+								AutoCenter(markers);
+							}
+						}
+					})(marker,sharedPhotos[p].URI,sharedPhotos,markers));
 					
 					iconCounter++;
 					if(iconCounter >=icons_length){
@@ -158,25 +187,27 @@ function loadMap()
 				}
 				
 			}
-			function AutoCenter() {
-			alert('auto center');
-			  //  Create a new viewpoint bound
-			  var bounds = new google.maps.LatLngBounds();
-			  //  Go through each...
-			  $.each(markers, function (index, marker) {
-				bounds.extend(marker.position);
-			  });
-			  //  Fit these bounds to the map
-			  map.fitBounds(bounds);
-			  map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-			}
-			AutoCenter();
+			
+			AutoCenter(markers);
 
 		}
 		else{
 			alert('no sharedPhotos found');
 		}
 	}
+
+function AutoCenter(markers) {
+// alert('auto center');
+  //  Create a new viewpoint bound
+  var bounds = new google.maps.LatLngBounds();
+  //  Go through each...
+  $.each(markers, function (index, marker) {
+	bounds.extend(marker.position);
+  });
+  //  Fit these bounds to the map
+  map.fitBounds(bounds);
+  map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+}
 	
 function drawPath(data){
 	var myLatLng = new google.maps.LatLng(data[0].coords.latitude, data[0].coords.longitude);

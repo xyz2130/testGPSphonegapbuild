@@ -145,8 +145,8 @@ function isIOS() {
 			e.file(function (f){
 				var lastmoddate = f.lastModifiedDate;
 				// alert('in save entrylastmod type '+typeof(lastmoddate));
-				alert('in file entrylastmod '+lastmoddate);
-				alert('in file '+imageURI);
+				// alert('in file entrylastmod '+lastmoddate);
+				// alert('in file '+imageURI);
 				// for(var key in f){
 					// if(f.hasOwnProperty(key)){alert(key+', '+f[key]);}
 				// }
@@ -247,16 +247,16 @@ function isIOS() {
 	
 	function getShared(imageURI){
 		var deferred = new $.Deferred();
-		alert('getshared');
+		// alert('getshared');
 		var photos = getLocalStorageObj("photos");
 		var pURI = getURIfromLocalStorage(imageURI);
 		$.when(photos,pURI).done(function (photos,pURI){
 			var ret = false;
 			//entry exists in local storage
-			alert('photos pURI, '+photos+' '+pURI);
+			// alert('photos pURI, '+photos+' '+pURI);
 			if(pURI!=null && pURI!=''){
 				// if(photos[pURI] != null && photos[pURI] != ''){
-				alert(photos[pURI]);
+				// alert(photos[pURI]);
 					ret = photos[pURI].shared;
 					// deferred.resolve(ret);
 				// }
@@ -434,14 +434,14 @@ function isIOS() {
 			//get photo data collection from localStorage	
 			var pURI = getURIfromLocalStorage(photoURI);
 			$.when(photos,sharedPhotos,pURI).done(function (photos,sharedPhotos,pURI){
-				alert('p s pu, '+photos+' '+sharedPhotos+' '+pURI);
+				// alert('p s pu, '+photos+' '+sharedPhotos+' '+pURI);
 			
 			
 				// somehow the removeFail fires instead of removeSuccess which
 				// does not fire despite that the file is successfully removed
 				
 				  
-				alert('delete localstorage');
+				// alert('delete localstorage');
 				
 				// if(lastmoddate!=null && lastmoddate!='' && lastmoddate!='Invaid Date'){
 					// // find the photo with the same last mod time and delete
@@ -461,7 +461,7 @@ function isIOS() {
 					
 					// sharedPhotos.then(function(sharedPhotos){
 				if(pURI !=null && pURI!= ''){
-					alert('del local');
+					// alert('del local');
 					delete photos[pURI];
 					delete sharedPhotos[pURI];
 					window.localStorage.setItem("photos",JSON.stringify(photos));
@@ -486,7 +486,7 @@ function isIOS() {
 			$('#imgContainer').hide();
 			$('#share').hide();
 			$('#del').hide();
-			alert('after hide');
+			// alert('after hide');
 			
 			photoURI = '';
 			
@@ -553,7 +553,7 @@ function isIOS() {
 			var pURI = getURIfromLocalStorage(photoURI);
 			
 			$.when(photos,sharedPhotos,pURI).done(function (photos,sharedPhotos,pURI){
-				alert('p s pu, '+photos+' '+sharedPhotos+' '+pURI);
+				// alert('p s pu, '+photos+' '+sharedPhotos+' '+pURI);
 			
 				var checkURI = true;
 				var checkCoords = true;
@@ -567,7 +567,8 @@ function isIOS() {
 				}
 				
 				//pURI exists, but no coords saved
-				if(checkURI == true && (photos[pURI].coords == null || photos[pURI].coords =='')){
+				if(checkURI == true && photos[pURI]!=null && photos[pURI]!=''
+				&& (photos[pURI].coords == null || photos[pURI].coords =='')){
 					checkCoords = false;
 				}
 				else{
