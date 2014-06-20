@@ -148,7 +148,7 @@ function isIOS() {
 				// alert('in save entrylastmod '+lastmoddate);
 				alert('in file '+imageURI);
 				for(var key in f){
-					if(f.hasOwnProperty(key){alert(key+', '+f[key]);}
+					if(f.hasOwnProperty(key)){alert(key+', '+f[key]);}
 				}
 				deferred.resolve(lastmoddate);
 			},function(){alert('resolve URI failed'); deferred.resolve('');});
