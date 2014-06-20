@@ -33,7 +33,7 @@ function isIOS() {
 	//
 	function currentPosition(){
 		//start creating promise
-		var locationDefer = $.Deferred();
+		var locationDefer = new $.Deferred();
 		
 		var flag = new Boolean();
 		
@@ -41,25 +41,17 @@ function isIOS() {
 			flag = true;
 			
 			//get current location
-			var geoPromise = navigator.geolocation.getCurrentPosition(function(pos){
-								return pos;
-							}, function(){
-								//has GPS but not working...
-								alert(1);
-								errorGeolocation(flag);
-								alert('after geo fail');
-								return '';
-							});
+			navigator.geolocation.getCurrentPosition(function(pos){
+					locationDefer.resolve(pos);
+				}, function(){
+					//has GPS but not working...
+					alert(1);
+					errorGeolocation(flag);
+					alert('after geo fail');
+					locationDefer.resolve('');
+				});
 			
-			geoPromise.then(function (position){
-			alert('promise success');
-				alert('return '+position);
-				locationDefer.resolve(position);
-			},function (position){
-			alert('promise fail');
-				alert('return '+position);
-				locationDefer.resolve(position);
-			});
+			
 			
 		}
 		else {
