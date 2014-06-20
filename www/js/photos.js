@@ -138,21 +138,21 @@ function isIOS() {
 	}
 	function getLastModDate(imageURI){
 		// alert('s1');
-		// var entry = getEntryFile(imageURI);
+		var entry = getEntryFile(imageURI);
 		var deferred = new $.Deferred();
 		// alert('s2');
-		// entry.then(function(e){
-			// e.file(function (f){
-				// var lastmoddate = f.lastModifiedDate;
-				// // alert('in save entrylastmod type '+typeof(lastmoddate));
-				// // alert('in save entrylastmod '+lastmoddate);
-				// deferred.resolve(lastmoddate);
-			// },function(){alert('resolve URI failed'); deferred.resolve('');});
-		// });
-		var lastmoddate = 11111111;
-			alert('in get entrylastmod type '+typeof(lastmoddate));
-				alert('in get entrylastmod '+lastmoddate);
+		entry.then(function(e){
+			e.file(function (f){
+				var lastmoddate = f.lastModifiedDate;
+				// alert('in save entrylastmod type '+typeof(lastmoddate));
+				// alert('in save entrylastmod '+lastmoddate);
 				deferred.resolve(lastmoddate);
+			},function(){alert('resolve URI failed'); deferred.resolve('');});
+		});
+		// var lastmoddate = 11111111;
+			// alert('in get entrylastmod type '+typeof(lastmoddate));
+				// alert('in get entrylastmod '+lastmoddate);
+				// deferred.resolve(lastmoddate);
 		return deferred.promise();
 	}
 	function getLocalStorageObj(str){
