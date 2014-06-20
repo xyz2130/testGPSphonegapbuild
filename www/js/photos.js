@@ -403,6 +403,7 @@ function isIOS() {
 				}
 			}
 			else{
+			alert('pURI not found');
 				deferred.resolve(null);
 			}
 			
