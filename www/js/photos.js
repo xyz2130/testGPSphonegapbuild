@@ -245,6 +245,29 @@ function isIOS() {
 		
 	}
 	
+	function getShared(imageURI){
+		var deferred = new $.Deferred();
+		var photos = getLocalStorageObj("photos");
+		var pURI = getURIfromlocalStorage(imageURI);
+		$.when(photos,pURI).done(function (photos,pURI){
+			var ret = false;
+			//entry exists in local storage
+			if(pURI!=null && pURI!=''){
+				// if(photos[pURI] != null && photos[pURI] != ''){
+					ret = photos[pURI].shared;
+					// deferred.resolve(ret);
+				// }
+			}
+			//no entry in local storage
+			
+				deferred.resolve(ret);
+			
+			
+		});
+		return deferred.promise();
+	}
+	
+	
     // Called when a photo is successfully retrieved
     //
     function onTakePhotoSuccess(imageURI) {
@@ -266,6 +289,19 @@ function isIOS() {
 	function onGetPhotoSuccess(imageURI){
 		alert('Get!!! '+imageURI);
 		photoURI = imageURI;
+		var lastmoddate = getLastModDate(imageURI);
+		var shared = getShared(imageURI);
+		
+		$.when(shared,lastmoddate).done(function (shared,lastmoddate){
+			if(shared == true){
+				$('#share-btn').prop('disabled',true);
+			}
+			else{
+				$('#share-btn').prop('disabled',false);
+			}
+			
+			alert('lastModDate: '+lastmoddate);
+		});
 		
 		//display photo
 		$('#imgContainer').show();
@@ -273,8 +309,6 @@ function isIOS() {
 		$('#del').show();
 		showPhoto(imageURI);
 		
-		var lastmoddate = getLastModDate(imageURI);
-		lastmoddate.then(function(last){alert('lastModDate: '+last);});
 	}
     // A button will call this function
     //
@@ -321,6 +355,56 @@ function isIOS() {
 		});
 		return deferred.promise();
 	}
+	
+	
+	function getURIfromLocalStorage(imgURI){
+		var deferred = new $.Deferred();
+		
+		
+		
+		// alert('deleting photo '+photoURI);
+		//retrieve saved photo coords
+		var photos = getLocalStorageObj("photos");
+		
+		var lastmoddate = getLastModDate(imgURI);
+		
+		
+		$.when(photos,lastmoddate).done(function (photos,lastmoddate){
+			// alert('p l, '+photos+' '+lastmoddate);
+		
+		
+			// somehow the removeFail fires instead of removeSuccess which
+			// does not fire despite that the file is successfully removed
+			
+			//get photo data collection from localStorage
+			  
+			// alert('delete localstorage');
+			
+			if(lastmoddate!=null && lastmoddate!='' && lastmoddate!='Invaid Date'){
+				//find the photo with the same last mod time and delete
+				var pURI;
+				for(var p in photos){
+					if(photos.hasOwnProperty(p)){
+						// alert('for '+p+', '+photos[p]+', '+photos[p].modDate);
+						var date = photos[p].modDate / 1000;
+						if(date == lastmoddate || date-lastmoddate == 1 || date - lastmoddate == -1){
+							alert('get!!! '+p);
+							pURI = p;
+							deferred.resolve(pURI);
+							break;
+						}
+					}				
+				}
+			}
+			else{
+				deferred.resolve('');
+			}
+			
+		});
+		
+		return deferred.promise();
+	}
+	
 	//delete image
 	function deletePhoto(){
 	
@@ -331,113 +415,71 @@ function isIOS() {
 			alert('deleting photo '+photoURI);
 			//retrieve saved photo coords
 			var photos = getLocalStorageObj("photos");
-			
-			var lastmoddate = getLastModDate(photoURI);
-			
-			
-			$.when(photos,lastmoddate).done(function (photos,lastmoddate){
-				// alert('p l, '+photos+' '+lastmoddate);
+			var sharedPhotos = getLocalStorageObj("sharedPhotos");
+			// var lastmoddate = getLastModDate(photoURI);
+			//get photo data collection from localStorage	
+			var pURI = getURIfromLocalStorage(photoURI);
+			$.when(photos,sharedPhotos,pURI).done(function (photos,sharedPhotos,pURI){
+				alert('p s pu, '+photos+' '+sharedPhotos+' '+pURI);
 			
 			
 				// somehow the removeFail fires instead of removeSuccess which
 				// does not fire despite that the file is successfully removed
 				
-				//get photo data collection from localStorage
 				  
 				alert('delete localstorage');
 				
-				if(lastmoddate!=null && lastmoddate!='' && lastmoddate!='Invaid Date'){
-					//find the photo with the same last mod time and delete
-					var pURI;
-					for(var p in photos){
-						if(photos.hasOwnProperty(p)){
-							// alert('for '+p+', '+photos[p]+', '+photos[p].modDate);
-							var date = photos[p].modDate / 1000;
-							if(date == lastmoddate || date-lastmoddate == 1 || date - lastmoddate == -1){
-								alert('get!!! '+p);
-								pURI = p;
-								break;
-							}
-						}
+				// if(lastmoddate!=null && lastmoddate!='' && lastmoddate!='Invaid Date'){
+					// // find the photo with the same last mod time and delete
+					// var pURI;
+					// for(var p in photos){
+						// if(photos.hasOwnProperty(p)){
+							// // alert('for '+p+', '+photos[p]+', '+photos[p].modDate);
+							// var date = photos[p].modDate / 1000;
+							// if(date == lastmoddate || date-lastmoddate == 1 || date - lastmoddate == -1){
+								// alert('get!!! '+p);
+								// pURI = p;
+								// break;
+							// }
+						// }
 					
-					}
+					// }
 					
-					if(pURI !=null && pURI!= ''){
-						alert('del local');
-						delete photos[pURI];
-						window.localStorage.setItem("photos",JSON.stringify(photos));
-						for(var p in photos){
-							if(photos.hasOwnProperty(p)) {
-								alert(p+', '+photos[p]);
-								for(var key in photos[p]){
-									if(photos[p].hasOwnProperty(key)){
-										alert(key+', '+photos[p][key]);
-										
-									}
-								}
-							}
-							
-						}
-					}
-					removeFile(photoURI);
-					
+					// sharedPhotos.then(function(sharedPhotos){
+				if(pURI !=null && pURI!= ''){
+					alert('del local');
+					delete photos[pURI];
+					delete sharedPhotos[pURI];
+					window.localStorage.setItem("photos",JSON.stringify(photos));
+					window.localStorage.setItem("sharedPhotos",JSON.stringify(sharedPhotos));
+					// for(var p in photos){
+						// if(photos.hasOwnProperty(p)) {
+							// alert(p+', '+photos[p]);
+							// for(var key in photos[p]){
+								// if(photos[p].hasOwnProperty(key)){
+									// alert(key+', '+photos[p][key]);
+									
+								// }
+							// }
+						// }
+						
+					// }
 				}
-				  
-				$('#imgContainer').hide();
-				$('#share').hide();
-				$('#del').hide();
-				alert('after hide');
-				
-				photoURI = '';
-				
-				deferred.resolve();
+						
+				removeFile(photoURI);
+			
 			});
-			
-			
-		}
-		return deferred.promise();
-	}
-	
-	function resSuccess(fileEntry){
-		alert('deleting file '+fileEntry.fullPath);
-		fileEntry.remove(rmSuccess,rmFail);
-		delete photoURI;
-	}
-	
-	function resFail(message){
-		console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
-	}
-	
-	function rmSuccess(){
-		  alert('image deleted');
-		  //remove photo coords from localStorage
-		  var photos = window.localStorage.getItem("photos");
-		  if(photos!=''){
-			photos = JSON.parse(photos);
-			if(photos[photoURI]!=''){
-				delete photos[photoURI];
-				window.localStorage.setItem("photos",JSON.stringify(photos));
-			}
-		  }
-		  
-		  // Get image handle
-		  //
-		  // var largeImage = document.getElementById('largeImage');
-
-		  // hide image elements
-		  //
-		  // largeImage.style.display = 'none';
 			$('#imgContainer').hide();
 			$('#share').hide();
 			$('#del').hide();
-		  //reset values
-		  // largeImage.src = '';
-		  //photoURI = null;
-	}
-	
-	function rmFail(message){
-		alert('image delete failed: '+getFileErrMsg(message.code));
-		//photoURI=null;
+			alert('after hide');
+			
+			photoURI = '';
+			
+			deferred.resolve();
+		}
+			
+		return deferred.promise();
 	}
 	
 	function getFileErrMsg(code){
@@ -485,102 +527,98 @@ function isIOS() {
 	}
 	
 	function shareOnMap(){
+		var deferred = new $.Deferred();
+		
 		if(photoURI != null && photoURI != ''){
 			alert('sharing photo '+photoURI);
 			
-			var entryLastMod;	
-			window.resolveLocalFileSystemURI(photoURI, function (fileEntry) {
-				//get last mod date from metadata
-				fileEntry.getMetadata(function (metadata){
-					entryLastMod = metadata.modificationTime;
-				},null);
+			var photos = getLocalStorageObj("photos");
+			var sharedPhotos = getLocalStorageObj("sharedPhotos");
+			// var lastmoddate = getLastModDate(photoURI);
+			//get photo data collection from localStorage	
+			var pURI = getURIfromLocalStorage(photoURI);
+			
+			$.when(photos,sharedPhotos,pURI).done(function (photos,sharedPhotos,pURI){
+				alert('p s pu, '+photos+' '+sharedPhotos+' '+pURI);
+			
+				var checkURI = true;
+				var checkCoords = true;
 				
-			}, function (message){
-				console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
-			});
-		
-			var photos = window.localStorage.getItem("photos");
-			  if(photos!=null && photos!=''){
-				photos = JSON.parse(photos);
+				//check pURI in local storage
+				if(pURI!=null && pURI!=''){
+					checkURI = true;
+				}
+				else{
+					checkURI = false;
+				}
 				
-				
-				if(entryLastMod!=null && entryLastMod!=''){
-					//find the photo with the same last mod time
-					var pURI;
-					for(var p in photos){
-						if(p.modDate.getTime() == entryLastMod.getTime()){
-							pURI = p;
-							break;
-						}
-					}
-					
-					if(pURI !=null && pURI!= ''){
-						var sharing = false;
+				//pURI exists, but no coords saved
+				if(checkURI == true && (photos[pURI].coords == null || photos[pURI].coords =='')){
+					checkCoords = false;
+				}
+				else{
+					checkCoords = true;
+				}
 						
-						//check for photo's coord, if none, get the current one
-						if(pURI.coords == null || pURI.coords ==''){
-							alert('getting coords');
-							var pos = currentPosition();
-							
+				var sharing = false;
+				
+				
+				//no coords data		
+				if(checkCoords == false){
+					if(confirm('tag and share this photo at current GPS location?')){
+						alert('getting coords...');
+						var pos = currentPosition();
+				
+						pos.then(function(pos){
 							//save new coords to photo data
 							if(pos!=null && pos!= ''){
-								pURI.coords = pos;
+								
+								//create new entry, if none
+								if(checkURI == false){
+									photos[pURI] = {};
+									photos[pURI].URI = pURI;
+								}
+								photos[pURI].coords = pos;
 								sharing = true;
-								pURI.shared = true;
+								photos[pURI].shared = true;
 								
 							}
 							else{
-								
-								sharing = false;
+								alert('sharing failed, no GPS available');
 							}
-						}
-						//coords already in photo data
-						else{
-							sharing = true;
-							pURI.shared = true;
-						}
-						
-						
-						if(sharing == true){
-							photos[pURI.URI] = pURI;
-							window.localStorage.setItem("photos",JSON.stringify(photos));
-							
-							//save to local storage to load on map
-							var sharedPhotos = window.localStorage.getItem("sharedPhotos");
-							if(sharedPhotos == null || sharedPhotos == ''){
-								sharedPhotos = {};
-							}
-							else{
-								sharedPhotos = JSON.parse(sharedPhotos);
-							}
-							sharedPhotos[pURI.URI] = pURI;
-							window.localStorage.setItem("sharedPhotos",JSON.stringify(sharedPhotos));
-							
-							//upload to server
-							//uploadPhoto();
-						}
-						else{
-							alert('share failed, no coords found');
-						}
+						});
 						
 					}
 					else{
-						alert('sharing failed: photo data not found');
+					//abort sharing
 					}
-					
-				}
+				}	
+				
+				//coords already in photo data
 				else{
-					alert('sharing failed: photo last date invalid');
+					sharing = true;
+					photos[pURI].shared = true;
 				}
 				
-			}
-			else{
-				alert('sharing failed: photo data collection invalid');
-			}
-		}
-		else{
-			alert('sharing failed: photoURI invalid');
-		}
+				
+				if(sharing == true){
+					//save to local storage to load on map
+					sharedPhotos[pURI] = photos[pURI];
+					window.localStorage.setItem("photos",JSON.stringify(photos));
+					
+					
+					window.localStorage.setItem("sharedPhotos",JSON.stringify(sharedPhotos));
+					
+					//upload to server
+					//uploadPhoto();
+				}
+				else{
+					alert('share failed, no coords found');
+				}
+				deferred.resolve();
+			});	
+		}	
+		return deferred.promise();
 	}
 	
 	/////////////////////////////////////////////////////
