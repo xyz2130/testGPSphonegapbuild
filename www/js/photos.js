@@ -126,19 +126,30 @@ function isIOS() {
 	  
 	  
 	}
-	function getLastModDate(imageURI){
-		var deferred = new $.Deffered();
+	function getEntryFile(imageURI){
+		var deferred = new $.Deferred();
 		window.resolveLocalFileSystemURI(imageURI, function(entry){
-			entry.file(function (f){
-				var lastmoddate = f.lastModifiedDate;
-				alert('in save entrylastmod type '+typeof(lastmoddate));
-				alert('in save entrylastmod '+lastmoddate);
-				deferred.resolve(lastmoddate);
-			},function(){deferred.resolve('');});
+			deferred.resolve(entry);
 		}, function(message){
 			console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
 			deferred.resolve('');
 		});
+		return deferred.promise();
+	}
+	function getLastModDate(imageURI){
+	alert('s1');
+		var entry = getEntryFile(imageURI);
+		var deferred = new $.Deferred();
+		alert('s2');
+		entry.then(function(e){
+			e.file((function (f){
+				var lastmoddate = f.lastModifiedDate;
+				alert('in save entrylastmod type '+typeof(lastmoddate));
+				alert('in save entrylastmod '+lastmoddate);
+				deferred.resolve(lastmoddate);
+			},function(){alert('resolve URI failed'); deferred.resolve('');});
+		});
+			
 		return deferred.promise();
 	}
 	// Retrieve and save current GPS location to the given photo
