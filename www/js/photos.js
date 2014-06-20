@@ -145,8 +145,8 @@ function isIOS() {
 			e.file(function (f){
 				var lastmoddate = f.lastModifiedDate;
 				// alert('in save entrylastmod type '+typeof(lastmoddate));
-				// alert('in save entrylastmod '+lastmoddate);
-				// alert('in file '+imageURI);
+				alert('in file entrylastmod '+lastmoddate);
+				alert('in file '+imageURI);
 				// for(var key in f){
 					// if(f.hasOwnProperty(key)){alert(key+', '+f[key]);}
 				// }
