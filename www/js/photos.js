@@ -162,6 +162,7 @@ function isIOS() {
 		if(obj!=null && obj!=''){
 		alert('local exists');
 			obj = JSON.parse(obj);
+			
 			deferred.resolve(obj);
 		}
 		else{
@@ -213,13 +214,20 @@ function isIOS() {
 			window.localStorage.setItem("photos",JSON.stringify(photos));
 			
 			var test = getLocalStorageObj("photos");
-			test.then(function (test){
-			for(var p in test){
-			alert('test loop1 '+p);
-				for(var pp in p){
-					if(p.hasOwnProperty(pp)) {alert(pp);alert(p[pp]);}
+			test.then(function (tt){
+			alert('test '+tt);
+				for(var p in tt){
+					if(tt.hasOwnProperty(p)) {
+						alert(p);alert(tt[p]);
+						for(var key in tt[p]){
+							if(tt[p].hasOwnProperty(key)){
+								alert(key);
+								alert(tt[p][key]);
+							}
+						}
+					}
+					
 				}
-			}
 			});
 			
 			
