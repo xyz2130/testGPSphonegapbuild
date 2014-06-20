@@ -50,8 +50,13 @@ function isIOS() {
 								alert('after geo fail');
 								return '';
 							});
-			alert('promise always');
-			geoPromise.always(function (position){
+			
+			geoPromise.then(function (position){
+			alert('promise success');
+				alert('return '+position);
+				locationDefer.resolve(position);
+			},function (position){
+			alert('promise fail');
 				alert('return '+position);
 				locationDefer.resolve(position);
 			});
