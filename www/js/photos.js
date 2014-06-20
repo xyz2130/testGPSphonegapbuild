@@ -45,9 +45,9 @@ function isIOS() {
 					locationDefer.resolve(pos);
 				}, function(){
 					//has GPS but not working...
-					alert(1);
+					// alert(1);
 					errorGeolocation(flag);
-					alert('after geo fail');
+					// alert('after geo fail');
 					locationDefer.resolve('');
 				});
 			
@@ -58,7 +58,7 @@ function isIOS() {
 			//device has no GPS
 			flag = false;
 			errorGeolocation(flag);
-			alert('return null');
+			// alert('return null');
 			locationDefer.resolve('');
 		}
 		
@@ -146,10 +146,10 @@ function isIOS() {
 				var lastmoddate = f.lastModifiedDate;
 				// alert('in save entrylastmod type '+typeof(lastmoddate));
 				// alert('in save entrylastmod '+lastmoddate);
-				alert('in file '+imageURI);
-				for(var key in f){
-					if(f.hasOwnProperty(key)){alert(key+', '+f[key]);}
-				}
+				// alert('in file '+imageURI);
+				// for(var key in f){
+					// if(f.hasOwnProperty(key)){alert(key+', '+f[key]);}
+				// }
 				deferred.resolve(lastmoddate);
 			},function(){alert('resolve URI failed'); deferred.resolve('');});
 		});
@@ -162,15 +162,15 @@ function isIOS() {
 	function getLocalStorageObj(str){
 		var deferred = new $.Deferred();
 		 var obj = window.localStorage.getItem(str);
-		alert(obj);
+		// alert(obj);
 		if(obj!=null && obj!=''){
-		alert('local exists');
+		// alert('local exists');
 			obj = JSON.parse(obj);
 			
 			deferred.resolve(obj);
 		}
 		else{
-		alert('local not exists');
+		// alert('local not exists');
 			obj = {};
 			deferred.resolve(obj);
 		}
@@ -191,9 +191,9 @@ function isIOS() {
 		
 		$.when(photos,lastmoddate,pos).done(function (photos,lastmoddate,pos){
 			// alert('something1');
-			alert('last '+lastmoddate);
+			// alert('last '+lastmoddate);
 			
-			alert('poss '+pos);
+			// alert('poss '+pos);
 			//make new one
 			photos[imageURI] = {};
 			
@@ -216,25 +216,25 @@ function isIOS() {
 				alert('lastmodDate '+lastmoddate);
 				photos[imageURI].modDate = lastmoddate;
 			}
-			alert('something6');
+			// alert('something6');
 			window.localStorage.setItem("photos",JSON.stringify(photos));
 			
-			var test = getLocalStorageObj("photos");
-			test.then(function (tt){
-			alert('test '+tt);
-				for(var p in tt){
-					if(tt.hasOwnProperty(p)) {
-						alert(p+', '+tt[p]);
-						for(var key in tt[p]){
-							if(tt[p].hasOwnProperty(key)){
-								alert(key+', '+tt[p][key]);
+			// var test = getLocalStorageObj("photos");
+			// test.then(function (tt){
+			// alert('test '+tt);
+				// for(var p in tt){
+					// if(tt.hasOwnProperty(p)) {
+						// alert(p+', '+tt[p]);
+						// for(var key in tt[p]){
+							// if(tt[p].hasOwnProperty(key)){
+								// alert(key+', '+tt[p][key]);
 								
-							}
-						}
-					}
+							// }
+						// }
+					// }
 					
-				}
-			});
+				// }
+			// });
 			
 			
 			deferred.resolve();
@@ -254,7 +254,7 @@ function isIOS() {
 		//display photo
 		$('#imgContainer').show();
 		$('#share').show();
-		//$('#del').hide();
+		$('#del').hide();
 
 		showPhoto(imageURI);
 		
@@ -312,10 +312,10 @@ function isIOS() {
 		var entry = getEntryFile(imgURI);
 		entry.then(function(e){
 			e.remove(function (entry) {
-				alert('image deleted');
+				// alert('image deleted');
 				deferred.resolve();
 			},function(message){
-				alert('image delete failed: '+getFileErrMsg(parseInt(message.code)));
+				// alert('image delete failed: '+getFileErrMsg(parseInt(message.code)));
 				deferred.resolve();
 			});
 		});
@@ -336,7 +336,7 @@ function isIOS() {
 			
 			
 			$.when(photos,lastmoddate).done(function (photos,lastmoddate){
-				alert('p l, '+photos+' '+lastmoddate);
+				// alert('p l, '+photos+' '+lastmoddate);
 			
 			
 				// somehow the removeFail fires instead of removeSuccess which
@@ -351,8 +351,9 @@ function isIOS() {
 					var pURI;
 					for(var p in photos){
 						if(photos.hasOwnProperty(p)){
-							alert('for '+p+', '+photos[p]+', '+photos[p].modDate);
-							if(photos[p].modDate == lastmoddate){
+							// alert('for '+p+', '+photos[p]+', '+photos[p].modDate);
+							var date = photos[p].modDate / 1000;
+							if(date == lastmoddate || date-lastmoddate == 1 || date - lastmoddate == -1){
 								alert('get!!! '+p);
 								pURI = p;
 								break;
