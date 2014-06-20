@@ -137,22 +137,22 @@ function isIOS() {
 		return deferred.promise();
 	}
 	function getLastModDate(imageURI){
-		alert('s1');
-		var entry = getEntryFile(imageURI);
+		// alert('s1');
+		// var entry = getEntryFile(imageURI);
 		var deferred = new $.Deferred();
-		alert('s2');
-		entry.then(function(e){
-			e.file(function (f){
-				var lastmoddate = f.lastModifiedDate;
-				alert('in save entrylastmod type '+typeof(lastmoddate));
-				alert('in save entrylastmod '+lastmoddate);
-				deferred.resolve(lastmoddate);
-			},function(){alert('resolve URI failed'); deferred.resolve('');});
-		});
-		// var lastmoddate = 11111111;
-			// alert('in save entrylastmod type '+typeof(lastmoddate));
-				// alert('in save entrylastmod '+lastmoddate);
+		// alert('s2');
+		// entry.then(function(e){
+			// e.file(function (f){
+				// var lastmoddate = f.lastModifiedDate;
+				// // alert('in save entrylastmod type '+typeof(lastmoddate));
+				// // alert('in save entrylastmod '+lastmoddate);
 				// deferred.resolve(lastmoddate);
+			// },function(){alert('resolve URI failed'); deferred.resolve('');});
+		// });
+		var lastmoddate = 11111111;
+			alert('in get entrylastmod type '+typeof(lastmoddate));
+				alert('in get entrylastmod '+lastmoddate);
+				deferred.resolve(lastmoddate);
 		return deferred.promise();
 	}
 	function getLocalStorageObj(str){
@@ -186,26 +186,28 @@ function isIOS() {
 		//wait for geolocation to finish
 		
 		$.when(photos,lastmoddate,pos).done(function (photos,lastmoddate,pos){
-		alert('something1');
-		alert('last '+lastmoddate);
-		
-		alert('poss '+pos);
-		photos[imageURI] = {};
+			// alert('something1');
+			alert('last '+lastmoddate);
+			
+			alert('poss '+pos);
+			//make new one
+			photos[imageURI] = {};
+			
 			if(pos!=''){
 				var d = new Date();
-				alert('something2');
+				// alert('something2');
 				photos[imageURI].coords = pos;
 				photos[imageURI].posDate = d.getTime();
-				alert('sth1');
+				// alert('sth1');
 			}
 			else{
 				alert('something3');
 				photos[imageURI].coords = '';
 			}
-			alert('something4');
+			// alert('something4');
 			photos[imageURI].URI = imageURI;
 			photos[imageURI].shared = shared;
-			alert('something5');
+			// alert('something5');
 			if(lastmoddate!=null){
 				alert('lastmodDate '+lastmoddate);
 				photos[imageURI].modDate = lastmoddate;
@@ -218,11 +220,11 @@ function isIOS() {
 			alert('test '+tt);
 				for(var p in tt){
 					if(tt.hasOwnProperty(p)) {
-						alert(p);alert(tt[p]);
+						alert(p+', '+tt[p]);
 						for(var key in tt[p]){
 							if(tt[p].hasOwnProperty(key)){
-								alert(key);
-								alert(tt[p][key]);
+								alert(key+', '+tt[p][key]);
+								
 							}
 						}
 					}
@@ -298,70 +300,83 @@ function isIOS() {
       alert('Failed because: ' + message);
 	  delete photoURI;
     }
-	
+	function removeFile(imgURI){
+		var deferred = new $.Deferred();
+		//get file entry
+		var entry = getEntryFile(imgURI);
+		entry.then(function(e){
+			e.remove(function (entry) {
+				alert('image deleted');
+				deferred.resolve();
+			},function(message){
+				alert('image delete failed: '+getFileErrMsg(parseInt(message.code)));
+				deferred.resolve();
+			});
+		});
+		return deferred.promise();
+	}
 	//delete image
 	function deletePhoto(){
+	
+		var deferred = new $.Deferred();
+		
+		
 		if(photoURI != null && photoURI != ''){
 			alert('deleting photo '+photoURI);
+			//retrieve saved photo coords
+			var photos = getLocalStorageObj("photos");
+			
+			var lastmoddate = getLastModDate(photoURI);
 			
 			
-			var entryLastMod;
+			$.when(photos,lastmoddate).done(function (photos,lastmoddate){
+				alert('p l, '+photos+' '+lastmoddate);
 			
-			window.resolveLocalFileSystemURI(photoURI, function (fileEntry) {
-				alert('deleting file '+fileEntry.fullPath);
-				alert('file url '+fileEntry.toURL());
-				//get last mod date from metadata
-				fileEntry.getMetadata(function (metadata){
-					entryLastMod = metadata.modificationTime;
-						alert('entrylastmod type '+typeof(entryLastMod));
-						alert('entrylastmod '+entryLastMod);
-					},null);
-					
-				
+			
 				// somehow the removeFail fires instead of removeSuccess which
 				// does not fire despite that the file is successfully removed
-				// so the associated photo data is deleted here, at URI resolve success
 				
 				//get photo data collection from localStorage
-				  var photos = window.localStorage.getItem("photos");
-				  if(photos!=null && photos!=''){
-					photos = JSON.parse(photos);
-					alert('delete localstorage');
-					
-					if(entryLastMod!=null && entryLastMod!=''){
-						//find the photo with the same last mod time and delete
-						var pURI;
-						for(var p in photos){
-						alert('for '+p.URI);
-							if(p.modDate.getTime() == entryLastMod.getTime()){
+				  
+				alert('delete localstorage');
+				
+				if(lastmoddate!=null && lastmoddate!='' && lastmoddate!='Invaid Date'){
+					//find the photo with the same last mod time and delete
+					var pURI;
+					for(var p in photos){
+						if(photos.hasOwnProperty(p)){
+							alert('for '+p+', '+photos[p]);
+							if(photos[p].modDate == lastmoddate){
+								alert('get!!! '+p);
 								pURI = p;
 								break;
 							}
 						}
 					
-						if(pURI !=null && pURI!= ''){
-						alert('del local');
-							delete photos[pURI.URI];
-							window.localStorage.setItem("photos",JSON.stringify(photos));
-						}
 					}
-				  }
-				  $('#imgContainer').hide();
+					
+					if(pURI !=null && pURI!= ''){
+						alert('del local');
+						delete photos[pURI];
+						window.localStorage.setItem("photos",JSON.stringify(photos));
+					}
+					removeFile(photoURI);
+					
+				}
+				  
+				$('#imgContainer').hide();
 				$('#share').hide();
 				$('#del').hide();
 				alert('after hide');
-				fileEntry.remove(function (entry) {
-						alert('image deleted');
-					  
-					},function(message){
-						alert('image delete failed: '+getFileErrMsg(parseInt(message.code)));
-					});
-				delete photoURI;
-			}, function (message){
-				console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
-				alert('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
+				
+				photoURI = '';
+				
+				deferred.resolve();
 			});
+			
+			
 		}
+		return deferred.promise();
 	}
 	
 	function resSuccess(fileEntry){
