@@ -126,54 +126,62 @@ function isIOS() {
 	  
 	  
 	}
-	
+	function getLastModDate(imageURI){
+		var deferred = new $.Deffered();
+		window.resolveLocalFileSystemURI(imageURI, function(entry){
+			entry.file(function (f){
+				var lastmoddate = f.lastModifiedDate;
+				alert('in save entrylastmod type '+typeof(lastmoddate));
+				alert('in save entrylastmod '+lastmoddate);
+				deferred.resolve(lastmoddate);
+			},function(){deferred.resolve('');});
+		}, function(message){
+			console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
+			deferred.resolve('');
+		});
+		return deferred.promise();
+	}
 	// Retrieve and save current GPS location to the given photo
 	//
 	function savePhotoData(imageURI,shared){
 		//retrieve saved photo coords
 		var photos = window.localStorage.getItem("photos");
+		if(photos!=''){
+			photos = JSON.parse(photos);
+		}
+		else{
+			photos = {};
+		}
+		var lastmoddate = getLastModDate(imageURI);
+		alert('something1');
+		alert('last '+lastmoddate);
+		//get current GPS location
+		var pos = currentPosition();
+		//wait for geolocation to finish
+		alert('poss '+pos);
+		if(pos!=''){
+			var d = new Date();
+			alert('something2');
+			photos[imageURI].coords = pos;
+			photos[imageURI].posDate = d.getTime();
+			alert('sth1');
+		}
+		else{
+		alert('something3');
+			photos[imageURI].coords = '';
+		}
+		alert('something4');
+		photos[imageURI].URI = imageURI;
+		photos[imageURI].shared = shared;
+		alert('something5');
+		if(lastmoddate!=null){
+			alert('lastmodDate '+lastmoddate);
+			photos[imageURI].modDate = lastmoddate;
+		}
+		alert('something6');
+		window.localStorage.setItem("photos",JSON.stringify(photos));
 		
-		window.resolveLocalFileSystemURI(imageURI, function(entry){
-			entry.file(function (f){
-				var lastmoddate = f.lastModifiedDate;
-				alert('in save entrylastmod type '+typeof(lastmoddate));
-						alert('in save entrylastmod '+lastmoddate);
-						if(photos!=''){
-							photos = JSON.parse(photos);
-						}
-						else{
-							photos = {};
-						}
-						alert('something1');
-						//get current GPS location
-						var pos = currentPosition();
-						//wait for geolocation to finish
-						setTimeout(function(){
-							if(pos!=''){
-								var d = new Date();
-								alert('something2');
-								photos[imageURI].coords = pos;
-								photos[imageURI].posDate = d.getTime();
-							}
-							else{
-							alert('something3');
-								photos[imageURI].coords = '';
-							}
-							alert('something4');
-							photos[imageURI].URI = imageURI;
-							photos[imageURI].shared = shared;
-							alert('something5');
-							if(lastmoddate!=null){
-								alert('lastmodDate '+lastmoddate);
-								photos[imageURI].modDate = lastmoddate;
-							}
-							alert('something6');
-							window.localStorage.setItem("photos",JSON.stringify(photos));
-						},(3000));
-			},null);
-		}, function(message){
-			console.log('resolveFileSystemURI failed: '+getFileErrMsg(message.code));
-		});
+
 		
 	}
 	
