@@ -247,7 +247,7 @@ function isIOS() {
 	
 	function getShared(imageURI){
 		var deferred = new $.Deferred();
-		// alert('getshared');
+		alert('getshared');
 		var photos = getLocalStorageObj("photos");
 		var pURI = getURIfromLocalStorage(imageURI);
 		$.when(photos,pURI).done(function (photos,pURI){
@@ -403,7 +403,7 @@ function isIOS() {
 				}
 			}
 			else{
-				deferred.resolve('');
+				deferred.resolve(null);
 			}
 			
 		});
