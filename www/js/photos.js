@@ -213,11 +213,14 @@ function isIOS() {
 			window.localStorage.setItem("photos",JSON.stringify(photos));
 			
 			var test = getLocalStorageObj("photos");
+			test.then(function (test){
 			for(var p in test){
 				for(var pp in p){
 					if(p.hasOwnProperty(pp)) {alert(pp);alert(p[pp]);}
 				}
 			}
+			});
+			
 			
 			deferred.resolve();
 		});
