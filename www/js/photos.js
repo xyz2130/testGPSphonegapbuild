@@ -389,6 +389,7 @@ function isIOS() {
 			if(lastmoddate!=null && lastmoddate!='' && lastmoddate!='Invaid Date'){
 				//find the photo with the same last mod time and delete
 				var pURI;
+				var found = false;
 				for(var p in photos){
 					if(photos.hasOwnProperty(p)){
 						// alert('for '+p+', '+photos[p]+', '+photos[p].modDate);
@@ -397,13 +398,19 @@ function isIOS() {
 							alert('get!!! '+p);
 							pURI = p;
 							deferred.resolve(pURI);
+							found = true;
 							break;
 						}
 					}				
 				}
+				if(found == false){
+					alert('pURI not found');
+					deferred.resolve(null);
+				}
+				
 			}
 			else{
-			alert('pURI not found');
+			// alert('pURI not found');
 				deferred.resolve(null);
 			}
 			
