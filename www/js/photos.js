@@ -149,13 +149,17 @@ function isIOS() {
 				deferred.resolve(lastmoddate);
 			},function(){alert('resolve URI failed'); deferred.resolve('');});
 		});
-			
+		// var lastmoddate = 11111111;
+			// alert('in save entrylastmod type '+typeof(lastmoddate));
+				// alert('in save entrylastmod '+lastmoddate);
+				// deferred.resolve(lastmoddate);
 		return deferred.promise();
 	}
 	function getLocalStorageObj(str){
 		var deferred = new $.Deferred();
-		var obj = window.localStorage.getItem(str);
-		if(obj!=''){
+		 var obj = window.localStorage.getItem(str);
+		alert(obj);
+		if(obj!=null && obj!=''){
 		alert('local exists');
 			obj = JSON.parse(obj);
 			deferred.resolve(obj);
@@ -177,6 +181,7 @@ function isIOS() {
 		var lastmoddate = getLastModDate(imageURI);
 		//get current GPS location
 		var pos = currentPosition();
+		// var pos = '';
 		//wait for geolocation to finish
 		
 		$.when(photos,lastmoddate,pos).done(function (photos,lastmoddate,pos){
@@ -184,6 +189,7 @@ function isIOS() {
 		alert('last '+lastmoddate);
 		
 		alert('poss '+pos);
+		photos[imageURI] = {};
 			if(pos!=''){
 				var d = new Date();
 				alert('something2');
@@ -205,6 +211,14 @@ function isIOS() {
 			}
 			alert('something6');
 			window.localStorage.setItem("photos",JSON.stringify(photos));
+			
+			var test = getLocalStorageObj("photos");
+			for(var p in test){
+				for(var pp in p){
+					if(p.hasOwnProperty(pp)) {alert(pp);alert(p[pp]);}
+				}
+			}
+			
 			deferred.resolve();
 		});
 		
