@@ -319,6 +319,7 @@ function isIOS() {
 	  options.allowEdit=true;
 	  options.targetWidth = 500;
 	  options.targetHeight = 500;
+	  options.correctOrientation = true;
       navigator.camera.getPicture(onTakePhotoSuccess, onFail, options);
     }
    
@@ -329,6 +330,7 @@ function isIOS() {
       options.sourceType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
 	  options.saveToPhotoAlbum = false;
 	  options.allowEdit = false;
+	  options.correctOrientation = false;
 	  delete options.targetWidth;
 	  delete options.targetHeight;
       navigator.camera.getPicture(onGetPhotoSuccess, onFail, options);

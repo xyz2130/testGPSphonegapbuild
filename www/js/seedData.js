@@ -34,6 +34,10 @@ var t = window.localStorage.getItem("tracks");
 					 coords: {longitude:170.33416166666666,latitude:-45.871478333333336},
 					 shared: true,
 					 };
+var photodummy = { URI:'content://media/external/images/media/22822',
+					 coords: {longitude:170.33481666666665,latitude:-45.87465},
+					 shared: true,
+					 };
   if(s!='' && s!=null){
     s = JSON.parse(s);
     s[photodummy.URI] = photodummy;
