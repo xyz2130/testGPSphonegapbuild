@@ -47,10 +47,11 @@ function isIOS() {
 								//has GPS but not working...
 								alert(1);
 								errorGeolocation(flag);
+								alert('after geo fail');
 								return '';
 							});
-			
-			geoPromise.then(function (position){
+			alert('promise always');
+			geoPromise.always(function (position){
 				alert('return '+position);
 				locationDefer.resolve(position);
 			});
