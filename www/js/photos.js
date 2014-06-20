@@ -215,6 +215,7 @@ function isIOS() {
 			var test = getLocalStorageObj("photos");
 			test.then(function (test){
 			for(var p in test){
+			alert('test loop1 '+p);
 				for(var pp in p){
 					if(p.hasOwnProperty(pp)) {alert(pp);alert(p[pp]);}
 				}
