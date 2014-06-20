@@ -247,6 +247,7 @@ function isIOS() {
 	
 	function getShared(imageURI){
 		var deferred = new $.Deferred();
+		alert('getshared');
 		var photos = getLocalStorageObj("photos");
 		var pURI = getURIfromlocalStorage(imageURI);
 		$.when(photos,pURI).done(function (photos,pURI){
@@ -289,11 +290,12 @@ function isIOS() {
     }
 	
 	function onGetPhotoSuccess(imageURI){
+		var deferred = new $.Deferred();
 		alert('Get!!! '+imageURI);
 		photoURI = imageURI;
-		var lastmoddate = getLastModDate(imageURI);
-		var shared = getShared(imageURI);
 		
+		var shared = getShared(imageURI);
+		var lastmoddate = getLastModDate(imageURI);
 		$.when(shared,lastmoddate).done(function (shared,lastmoddate){
 			if(shared == true){
 				$('#share-btn').prop('disabled',true);
@@ -308,8 +310,9 @@ function isIOS() {
 			$('#share').show();
 			$('#del').show();
 			showPhoto(imageURI);
+			deferred.resolve();
 		});
-		
+		return deferred;
 	}
     // A button will call this function
     //
