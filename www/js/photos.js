@@ -366,6 +366,18 @@ function isIOS() {
 						alert('del local');
 						delete photos[pURI];
 						window.localStorage.setItem("photos",JSON.stringify(photos));
+						for(var p in photos){
+							if(photos.hasOwnProperty(p)) {
+								alert(p+', '+photos[p]);
+								for(var key in photos[p]){
+									if(photos[p].hasOwnProperty(key)){
+										alert(key+', '+photos[p][key]);
+										
+									}
+								}
+							}
+							
+						}
 					}
 					removeFile(photoURI);
 					
