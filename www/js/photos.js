@@ -137,7 +137,7 @@ function isIOS() {
 		return deferred.promise();
 	}
 	function getLastModDate(imageURI){
-	alert('s1');
+		alert('s1');
 		var entry = getEntryFile(imageURI);
 		var deferred = new $.Deferred();
 		alert('s2');
@@ -152,45 +152,57 @@ function isIOS() {
 			
 		return deferred.promise();
 	}
+	function getLocalStorageObj(str){
+		var deferred = new $.Deferred();
+		var obj = window.localStorage.getItem(str);
+		if(obj!=''){
+			obj = JSON.parse(obj);
+			deferred.resolve(obj);
+		}
+		else{
+			obj = {};
+			deferred.resolve(obj);
+		}
+		return deferred.promise();
+	}
 	// Retrieve and save current GPS location to the given photo
 	//
 	function savePhotoData(imageURI,shared){
 		//retrieve saved photo coords
-		var photos = window.localStorage.getItem("photos");
-		if(photos!=''){
-			photos = JSON.parse(photos);
-		}
-		else{
-			photos = {};
-		}
+		var photos = getLocalStorageObj("photos");
+		
 		var lastmoddate = getLastModDate(imageURI);
-		alert('something1');
-		alert('last '+lastmoddate);
 		//get current GPS location
 		var pos = currentPosition();
 		//wait for geolocation to finish
+		alert('something1');
+		alert('last '+lastmoddate);
+		
 		alert('poss '+pos);
-		if(pos!=''){
-			var d = new Date();
-			alert('something2');
-			photos[imageURI].coords = pos;
-			photos[imageURI].posDate = d.getTime();
-			alert('sth1');
-		}
-		else{
-		alert('something3');
-			photos[imageURI].coords = '';
-		}
-		alert('something4');
-		photos[imageURI].URI = imageURI;
-		photos[imageURI].shared = shared;
-		alert('something5');
-		if(lastmoddate!=null){
-			alert('lastmodDate '+lastmoddate);
-			photos[imageURI].modDate = lastmoddate;
-		}
-		alert('something6');
-		window.localStorage.setItem("photos",JSON.stringify(photos));
+		$.when(photos,lastmoddate,pos).done(function (photos,lastmoddate,pos){
+			if(pos!=''){
+				var d = new Date();
+				alert('something2');
+				photos[imageURI].coords = pos;
+				photos[imageURI].posDate = d.getTime();
+				alert('sth1');
+			}
+			else{
+			alert('something3');
+				photos[imageURI].coords = '';
+			}
+			alert('something4');
+			photos[imageURI].URI = imageURI;
+			photos[imageURI].shared = shared;
+			alert('something5');
+			if(lastmoddate!=null){
+				alert('lastmodDate '+lastmoddate);
+				photos[imageURI].modDate = lastmoddate;
+			}
+			alert('something6');
+			window.localStorage.setItem("photos",JSON.stringify(photos));
+		});
+		
 		
 
 		
