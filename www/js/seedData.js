@@ -34,16 +34,24 @@ var t = window.localStorage.getItem("tracks");
 					 coords: {longitude:170.33416166666666,latitude:-45.871478333333336},
 					 shared: true,
 					 };
-var photodummy = { URI:'content://media/external/images/media/22822',
+var photodummy2 = { URI:'content://media/external/images/media/22822',
 					 coords: {longitude:170.33481666666665,latitude:-45.87465},
+					 shared: true,
+					 };
+ var photodummy3 = { URI:'content://media/external/images/media/22847',
+					 coords: {longitude:170.33426999999998,latitude:-45.87475166666666},
 					 shared: true,
 					 };
   if(s!='' && s!=null){
     s = JSON.parse(s);
     s[photodummy.URI] = photodummy;
+	s[photodummy2.URI] = photodummy2;
+	s[photodummy3.URI] = photodummy3;
   }
   else{
     s = {};
 	s[photodummy.URI] = photodummy;
+	s[photodummy2.URI] = photodummy2;
+	s[photodummy3.URI] = photodummy3;
   }
   window.localStorage.setItem("sharedPhotos",JSON.stringify(s));
