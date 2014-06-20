@@ -273,6 +273,8 @@ function isIOS() {
 		$('#del').show();
 		showPhoto(imageURI);
 		
+		var lastmoddate = getLastModDate(imageURI);
+		lastmoddate.then(function(last){alert('lastModDate: '+last);});
 	}
     // A button will call this function
     //
