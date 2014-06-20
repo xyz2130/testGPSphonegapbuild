@@ -156,10 +156,12 @@ function isIOS() {
 		var deferred = new $.Deferred();
 		var obj = window.localStorage.getItem(str);
 		if(obj!=''){
+		alert('local exists');
 			obj = JSON.parse(obj);
 			deferred.resolve(obj);
 		}
 		else{
+		alert('local not exists');
 			obj = {};
 			deferred.resolve(obj);
 		}
@@ -168,6 +170,7 @@ function isIOS() {
 	// Retrieve and save current GPS location to the given photo
 	//
 	function savePhotoData(imageURI,shared){
+		var deferred = new $.Deferred();
 		//retrieve saved photo coords
 		var photos = getLocalStorageObj("photos");
 		
@@ -175,11 +178,12 @@ function isIOS() {
 		//get current GPS location
 		var pos = currentPosition();
 		//wait for geolocation to finish
+		
+		$.when(photos,lastmoddate,pos).done(function (photos,lastmoddate,pos){
 		alert('something1');
 		alert('last '+lastmoddate);
 		
 		alert('poss '+pos);
-		$.when(photos,lastmoddate,pos).done(function (photos,lastmoddate,pos){
 			if(pos!=''){
 				var d = new Date();
 				alert('something2');
@@ -188,7 +192,7 @@ function isIOS() {
 				alert('sth1');
 			}
 			else{
-			alert('something3');
+				alert('something3');
 				photos[imageURI].coords = '';
 			}
 			alert('something4');
@@ -201,9 +205,10 @@ function isIOS() {
 			}
 			alert('something6');
 			window.localStorage.setItem("photos",JSON.stringify(photos));
+			deferred.resolve();
 		});
 		
-		
+		return deferred.promise();
 
 		
 	}
