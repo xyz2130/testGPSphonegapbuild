@@ -304,7 +304,7 @@ function isIOS() {
 				$('#share-btn').button('enabled');
 			}
 			
-			$('#share-btn').button('refresh');
+			// $('#share-btn').button('refresh');
 			alert('lastModDate: '+lastmoddate);
 			//display photo
 			$('#imgContainer').show();
