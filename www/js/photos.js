@@ -301,13 +301,12 @@ function isIOS() {
 			}
 			
 			alert('lastModDate: '+lastmoddate);
+			//display photo
+			$('#imgContainer').show();
+			$('#share').show();
+			$('#del').show();
+			showPhoto(imageURI);
 		});
-		
-		//display photo
-		$('#imgContainer').show();
-		$('#share').show();
-		$('#del').show();
-		showPhoto(imageURI);
 		
 	}
     // A button will call this function
