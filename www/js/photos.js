@@ -142,7 +142,7 @@ function isIOS() {
 		var deferred = new $.Deferred();
 		alert('s2');
 		entry.then(function(e){
-			e.file((function (f){
+			e.file(function (f){
 				var lastmoddate = f.lastModifiedDate;
 				alert('in save entrylastmod type '+typeof(lastmoddate));
 				alert('in save entrylastmod '+lastmoddate);
