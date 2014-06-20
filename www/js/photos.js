@@ -252,8 +252,10 @@ function isIOS() {
 		$.when(photos,pURI).done(function (photos,pURI){
 			var ret = false;
 			//entry exists in local storage
+			alert('photos pURI, '+photos+' '+pURI);
 			if(pURI!=null && pURI!=''){
 				// if(photos[pURI] != null && photos[pURI] != ''){
+				alert(photos[pURI]);
 					ret = photos[pURI].shared;
 					// deferred.resolve(ret);
 				// }
