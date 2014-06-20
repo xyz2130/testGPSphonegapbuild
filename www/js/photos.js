@@ -298,12 +298,13 @@ function isIOS() {
 		var lastmoddate = getLastModDate(imageURI);
 		$.when(shared,lastmoddate).done(function (shared,lastmoddate){
 			if(shared == true){
-				$('#share-btn').prop('disabled',true);
+				$('#share-btn').button('disable');
 			}
 			else{
-				$('#share-btn').prop('disabled',false);
+				$('#share-btn').button('enabled');
 			}
 			
+			$('#share-btn').button('refresh');
 			alert('lastModDate: '+lastmoddate);
 			//display photo
 			$('#imgContainer').show();

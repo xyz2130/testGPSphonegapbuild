@@ -28,18 +28,18 @@
 				<a href="index.html" data-role="button" data-inline="true" data-theme="a" rel="external"><img src="img/arrow_left_icon&24.png"></a>
 				<h1><img src="img/world.png"></h1>
 			</div><!-- /header -->
-    <button onclick="capturePhoto();">Capture Photo</button> <br>
-    <button onclick="getPhoto();">From Photo Library</button><br>
-    <button onclick="getPhoto();">From Photo Album</button><br>
+    <button type="submit" onclick="capturePhoto();">Capture Photo</button> <br>
+    <button type="submit" onclick="getPhoto();">From Photo Library</button><br>
+    <button type="submit" onclick="getPhoto();">From Photo Album</button><br>
 
 <div id = "imgContainer" style="width:100%;height:25%;" >
     <img style="display:none;width:100%;" id="largeImage" src="" />
 	</div>
 	<div id="share">
-	<button onclick="" id="share-btn">Share photo</button> <br>
+	<button type="submit" onclick="shareOnMap();" id="share-btn">Share photo</button> <br>
     </div>
 	<div id="del">
-	<button onclick="deletePhoto();">Delete photo</button> <br>
+	<button type="submit" onclick="deletePhoto();">Delete photo</button> <br>
 	</div>
     </div>
   </body>
