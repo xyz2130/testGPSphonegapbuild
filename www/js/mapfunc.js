@@ -99,24 +99,27 @@ function loadMap()
 }
 $("#view_sharedPhoto").live('click', function(){
 
-	if(gpsEnabled == true){
-		//alert('view shared photo');
-		  navigator.geolocation.clearWatch(watcher);
-		  watcher = false;
-		  markerYou.setMap(null);
-		  //alert('watcher cleared');
-		  placePhotos().then(function(){
-		  	markerYou.setMap(map);
-			//alert('place photos done, continue watching');
-			watcher = navigator.geolocation.watchPosition(function(newPosition) {
-					// Each time a new location is registered, move the marker.
-					myLocation = new google.maps.LatLng(newPosition.coords.latitude,newPosition.coords.longitude);
-					markerYou.setPosition(myLocation);
-			}, function() {}, {enableHighAccuracy:true, maximumAge:30000, timeout:27000});
+placePhotos();
+	// viewSharedPhoto();
+  // function viewSharedPhoto(){
+	// if(gpsEnabled == true){
+		// alert('view shared photo');
+		  // navigator.geolocation.clearWatch(watcher);
+		  // watcher = false;
+		  // markerYou.setMap(null);
+		  // alert('watcher cleared');
+		  // placePhotos().then(function(){
+		  	// markerYou.setMap(map);
+			// alert('place photos done, continue watching');
+			// watcher = navigator.geolocation.watchPosition(function(newPosition) {
+					// // Each time a new location is registered, move the marker.
+					// myLocation = new google.maps.LatLng(newPosition.coords.latitude,newPosition.coords.longitude);
+					// markerYou.setPosition(myLocation);
+			// }, function() {}, {enableHighAccuracy:true, maximumAge:30000, timeout:27000});
 		
-		 });
-	}
-  
+		 // });
+	// }
+// }
 });
  ////////////////////////////////////////////////////////
  // Marker + photo overlays code template from:
@@ -160,10 +163,10 @@ $("#view_sharedPhoto").live('click', function(){
 				if(sharedPhotos.hasOwnProperty(p)){
 					//alert('in loop p: '+sharedPhotos[p].URI);
 					//alert(JSON.stringify(sharedPhotos[p].coords));
-					var contentStr = $('<div style="width:100%;"><img style="width:100%;"'+ 
+					var contentStr = '<div style="width:100%;"><img style="width:100%;"'+ 
 										'src="'+sharedPhotos[p].URI+'"/><br>by '+ p+'<br>'+
-										'<button name="un-Share" id="un-Share" class="un-Share">'+
-										'UnShare</button> </div>');
+										'<button name="un-Share" id="un-Share" class="un-Share" >'+
+										'UnShare</button> </div>';
 					marker = new google.maps.Marker({
 						position: new google.maps.LatLng(sharedPhotos[p].coords.latitude, sharedPhotos[p].coords.longitude),
 						map: map,
@@ -182,7 +185,7 @@ $("#view_sharedPhoto").live('click', function(){
 						};
 					})(marker,contentStr));
 					
-					var rmbtn = contentStr.find('.un-Share')[0];
+					var rmbtn = $(contentStr.match('un-Share')[0]);
 					google.maps.event.addDomListener(rmbtn,'click',(function(marker,pURI,sharedPhotos,markers){
 						return function(){
 						//alert('removing1');
