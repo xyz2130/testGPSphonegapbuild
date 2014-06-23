@@ -44,7 +44,7 @@ $("#aaa").bind("click",function(event,ui){
      });
 });  
 
-$("#submitSignup").bind("click",function (event,ui){
+$("#submitSignup").bind("submit",function (event,ui){
 	event.preventDefault();
 	alert('submit signup');
 	
@@ -69,33 +69,33 @@ function signup(){
 	console.log('click');
 	//disable button
 	console.log('f n p e '+form+' '+name+' '+pass+' '+email);
-	$("submitSignup",form).attr("disabled","disabled");
+	$("#submitSignup",form).attr("disabled","disabled");
 	
 	 form = $("#signupForm");
-	name = $("#name").val();
+	name = $("#username").val();
 	 pass = $("#password").val();
 	email = $("#email").val();
-	if($("#email").val() == ""){
-		alert("Please input E-mail");
-		$("#email").focus();
-		$("submitSignup",form).removeAttr("disabled");
+	if($("#username").val() == ""){
+		alert("Please input Name");
+		$("#username").focus();
+		$("#submitSignup",form).removeAttr("disabled");
 		// return false;
 	}
 	else if($("#password").val() == ""){
 		alert("Please input password");
 		$("#password").focus();
-		$("submitSignup",form).removeAttr("disabled");
+		$("#submitSignup",form).removeAttr("disabled");
 		// return false;
 	}else if($("#password-2").val() == ""){
 		alert("Please input confirm password");
 		$("#password-2").focus();
-		$("submitSignup",form).removeAttr("disabled");
+		$("#submitSignup",form).removeAttr("disabled");
 		// return false;
 	}else if($("#password").val() != $("#password-2").val() ){
 		alert("Password not match");
 		$("#password-2").focus();
 		$("#password-2").val("");
-		$("submitSignup",form).removeAttr("disabled");
+		$("#submitSignup",form).removeAttr("disabled");
 		// return false;
 	}else{
 		var dat = $('#signupForm').serializeArray();
