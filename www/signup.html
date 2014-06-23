@@ -1,70 +1,125 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
 <html>
-	<head>
-		<title>Trek n Track</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-
-		<link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
-
-		<link rel="stylesheet" href="css/style.css" />
-		<link rel="stylesheet" href="css/photoswipe.css" />
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
-	
-		<script type="text/javascript" src="js/klass.min.js"></script>
-		<script type="text/javascript" src="js/code.photoswipe.jquery-3.0.4.min.js"></script>
-		<script type="text/javascript" src="js/custom.js"></script>
-		
-		<script type="text/javascript" src="js/account.js"></script>
-		<script type="text/javascript">
-			
+		<head>
+		<title>Trek n Track - Abel Tasman National Park Photo Sharing Application</title>
+		<link href="css/style.css" rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" type="image/x-icon" href="images/fav-icon.png" />
+		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 		</script>
+	    <!---strat-slider---->
+	    <script type="text/javascript" src="js/jquery.min.js"></script>
+	    <link rel="stylesheet" type="text/css" href="css/slider-style.css" />
+	     <link rel="stylesheet" type="text/css" href="css/jquery.mobile.theme-1.4.2.css" />
+	      <link rel="stylesheet" type="text/css" href="css/jquery.mobile.structure-1.4.2.css" />
+	      <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.2.css" />
+	      <link rel="stylesheet" type="text/css" href="css/jquery.icons-1.4.2.css" />
+	 
+		<script type="text/javascript" src="js/modernizr.custom.28468.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.4.2.js"></script>
+	
+		<script src="js/login.js"></script>
+	
+		<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css" />
+		<script type="text/javascript" src="js/jquery.mmenu.js"></script>
+			<script type="text/javascript">
+				//	The menu on the left
+				$(function() {
+					$('nav#menu-left').mmenu();
+				});
+		</script>
+		
 	</head>
 	<body>
-		<div data-role="page" >
-			<div data-role="header" id="header">
-				<a href="home.html" data-role="button" data-inline="true" data-theme="a" rel="external"><img src="img/arrow_left_icon&24.png"></a>
-				<h1>Sign Up</h1>
-			</div><!-- /header -->
-			<div data-role="content">
-				
-					<div class="contact-thankyou" style="display: none;">
-						Thank you.  Your message has been sent.  We will get back to you as soon as we can.
-					</div>
-					
-					<form id="signupForm" method="post" data-ajax="false">
-					
-						<div data-role="fieldcontain" class="text-field">
-							<label for="firstname">TREKKER NAME:</label>
-							<input type="text" name="name" value="" placeholder="" class="required" id="name-1" />
-						</div>
-						<div data-role="fieldcontain" class="text-field">
-							<label for="password">PASSWORD:</label>
-							<input type="password" name="password-1" value="" placeholder="" id="pass1" />
-						</div>
-
-					    <div data-role="fieldcontain" class="text-field">
-							<label for="confirmpassword">CONFIRM PASSWORD:</label>
-							<input type="password" name="password-2" value="" placeholder="" id="pass2" />
-						</div>
-						<div data-role="fieldcontain" class="text-field">
-							<label for="email">EMAIL ADDRESS:</label>
-							<input type="email" name="email-2" value="" placeholder="" class="required" id="email-2"  />
-						</div>
-						
-							<button type="submit" name="submit" id="submit_signup" value="SIGN_UP">SIGN UP</button>
-						</form>
-					
-				</div>
-				<p class="copyright">Copyright &copy; mobi. Designed by <a href="http://mrova.com" class="ui-link">mRova</a></p>
-			
 	
-			  <div data-role="footer" data-theme="a">
-            <div class="ui-bar">
-             <a href="" data-role="button" data-icon="arrow-u" data-theme="a" style="float:right;" class="returnTopAction" rel="external">Return top</a>             
-           </div>
-          </div>
-          <!-- /Footer --> 
+			<div id="page">
+					<div id="header">
+						<a class="navicon" href="#menu-left"> </a>
+					</div>
+					<nav id="menu-left">
+						<ul>
+							
+							
+							<div class="clear"> </div>
+						</ul>
+					</nav>
+			</div>
+		
+			<div class="header">
+				<div class="wrap">
+				<div class="header-left">
+					<div class="logo">
+						<a href="index.html">Sign Up</a>
+					</div>
+				</div>
+				<div class="header-right">
+	
+				<div class="clear">  
 
-		</div><!-- /page -->
+
+					</div>
+				
+
+
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+				
+				
+			
+
+		
+			<div class="content">
+				
+						<div class="clear" style="margin-left:10px; margin-right:10px; margin-top:-25px;">	 
+
+
+			<div class="clear"> <p><a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="Learn more" style="left:160px; top:30px;">Learn more</a></p>
+<div data-role="popup" id="popupInfo" class="ui-content" data-theme="a" style="max-width:350px;">
+  <p>This will be your Login username.</p>
+</div>
+						
+						<form method="post" id="signupForm" data-ajax="false" style="width:100%;">
+    <label for="textarea-1">Trekker Name</label>
+    <input type="text" name="username" value="" id="username" style="width:100%;"/>
+
+						<label for="email-2">Email Address</label>
+    <input type="email" name="email" id="email" value="" style="width:100%;"/>
+	
+					 <label for="password-2">Password</label>
+     <input type="password"  name="password" id="password" value="" autocomplete="off" style="width:100%;"/>
+
+	 <label for="password-2">Confirm Password</label>
+     <input type="password"  name="password-2" id="password-2" value="" autocomplete="off" style="width:100%;"/>
+	 <a href="javascript:;"  onclick="document.getElementById('signupForm').submit();" class="ui-btn ui-shadow ui-btn-e">Sign Up</a>
+						<a href="index.html" rel="external" class="ui-btn ui-shadow" onclick="resetFiled();">Cancel</a> 
+</form></div>
+
+
+</div>
+					
+				
+					
+					</div>
+				
+				<!---//End-mid-grids--->
+				<!---start-bottom-footer-grids---->
+				<div class="footer-grids">
+					<div class="wrap">
+						
+					</div>
+				</div>
+				<!---//End-bottom-footer-grids---->
+			</div>
+			<!----//End-content--->
+		<!---//End-wrap---->
 	</body>
 </html>
+

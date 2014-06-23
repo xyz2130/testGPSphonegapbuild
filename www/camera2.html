@@ -8,39 +8,119 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
+		
 
-		<link rel="stylesheet" href="css/style.css" />
+		
 		<link rel="stylesheet" href="css/photoswipe.css" />
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+
+	      <link rel="stylesheet" type="text/css" href="css/slider-style.css" />
+	      <link rel="stylesheet" type="text/css" href="css/jquery.mobile.theme-1.4.2.css" />
+	      <link rel="stylesheet" type="text/css" href="css/jquery.mobile.structure-1.4.2.css" />
+	      <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.2.css" />
+	      <link rel="stylesheet" type="text/css" href="css/jquery.icons-1.4.2.css" />
+		  <link rel="stylesheet" type="text/css" href="css/style.css" />
     
 		<script type="text/javascript" src="js/klass.min.js"></script>
-		<script type="text/javascript" src="js/jquery.mobile-1.0.1.min.js"></script>
-		<script type="text/javascript" src="js/code.photoswipe.jquery-3.0.4.min.js"></script>
+		
+		
 		<script type="text/javascript" src="js/custom.js"></script>
-	
+
 		<script type="text/javascript" src="phonegap.js"></script>
+		<script type="text/javascript" src="js/sharedView.js"></script>
 		<script type="text/javascript" src="js/photos.js"></script>
+		<script type="text/javascript" src="js/seedData.js"></script>
+		<script type="text/javascript" src="js/mapfunc.js"></script>
+
+		<link href="css/style.css" rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" type="image/x-icon" href="images/fav-icon.png" />
+		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+		</script>
+	    <!---strat-slider---->
+	    <script type="text/javascript" src="js/jquery.min.js"></script>
+
+	 
+		<script type="text/javascript" src="js/modernizr.custom.28468.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.4.2.js"></script>
+	
+		<script src="js/login.js"></script>
+	
+		<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css" />
+		<script type="text/javascript" src="js/jquery.mmenu.js"></script>
+			<script type="text/javascript">
+				//	The menu on the left
+				$(function() {
+					$('nav#menu-left').mmenu();
+				});
+		</script>
+		
   </head>
   <body >
-    <div data-role="page" data-add-back-btn="true">
-			<div data-role="header" id="header">
-				<a href="index.html" data-role="button" data-inline="true" data-theme="a" rel="external"><img src="img/arrow_left_icon&24.png"></a>
-				<h1><img src="img/world.png"></h1>
-			</div><!-- /header -->
-    <button type="submit" onclick="capturePhoto();">Capture Photo</button> <br>
-    <button type="submit" onclick="getPhoto();">From Photo Library</button><br>
-    <button type="submit" onclick="getPhoto();">From Photo Album</button><br>
+	<div id="page">
+					<div id="header">
+						<a class="navicon" href="#menu-left"> </a>
+					</div>
+					<nav id="menu-left">
+						<ul>
+							<li><a href="index.html" rel="external">Home</a></li>
+						    <li><a href="profile.html" rel="external">Profile</a></li>
+							<li><a href="parkinfo.html" rel="external">Park Info</a></li>
+							<li><a href="settings.html" rel="external">Settings</a></li>
+							<embed name="Woosh" src="sound/Woosh-Mark_DiAngelo-4778593.wav" loop="false" hidden="true" autostart="true">
+							<div class="clear"> </div>
+						</ul>
+					</nav>
+			</div>
+		<!------start-mobile-menu---->
+			<!---start-header---->
+			<div class="header">
+				<div class="wrap">
+				<div class="header-left">
+					<div class="logo">
+						<a href="index.html" rel="external">Camera</a>
+					</div>
+				</div>
+				<div class="header-right">
+			
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+				<div class="clear"> </div>
+			</div>
+			</div>
 
-<div id = "imgContainer" style="width:100%;height:25%;" >
+  	<div class="top-grids" style="margin-bottom:10px;">
+						
+						<div class="top-grid">
+							
+							
+							
+						</div>
+						
+						<div class="clear"> <div data-role="page" data-add-back-btn="true">	  
+			
+    <button type="submit" onclick="capturePhoto();" rel="external" class="ui-btn ui-shadow ui-btn-e" style="margin-bottom:-50px;">Capture Photo</button> <br>
+
+<div id = "imgContainer" style="width:100%;" >
     <img style="display:none;width:100%;" id="largeImage" src="" />
 	</div>
+<div id="del">
+	<button type="submit" onclick="deletePhoto();" class="ui-btn ui-shadow ui-btn-c" style="visibility: hidden;" >Delete photo</button> <br>
+	</div>
+
 	<div id="share">
 	<button type="submit" onclick="shareOnMap();" id="share-btn">Share photo</button> <br>
     </div>
-	<div id="del">
-	<button type="submit" onclick="deletePhoto();">Delete photo</button> <br>
-	</div>
-    </div>
+	
+
+	<div style="margin-top:30px; margin-bottom:10px;"><a href="mymap.html" rel="external" class="ui-btn ui-shadow" style="margin-bottom:-50px;">View My Map</a></div>
+
+
+    
+		</div>	
+</div>
+					</div>
+ 
   </body>
 </html>

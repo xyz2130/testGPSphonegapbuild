@@ -1,49 +1,138 @@
-<!DOCTYPE html>
 <!--
-Design by mRova Solutions
-http://www.mrova.com
-Released for free under a Creative Commons Attribution 2.5 License
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
 -->
+<!DOCTYPE HTML>
 <html>
-	<head>
-		<title>Free Mobile Template</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
-
-		<link rel="stylesheet" href="css/style.css" />
-		<link rel="stylesheet" href="css/photoswipe.css" />
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-	
-		<script type="text/javascript" src="js/klass.min.js"></script>
-		<script type="text/javascript" src="js/jquery.mobile-1.0.1.min.js"></script>
-		<script type="text/javascript" src="js/code.photoswipe.jquery-3.0.4.min.js"></script>
-		<script type="text/javascript" src="js/custom.js"></script>
+		<head>
+		<title>Trek n Track - Abel Tasman National Park Photo Sharing Application</title>
+		<link href="css/style.css" rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" type="image/x-icon" href="images/fav-icon.png" />
+		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+		</script>
+	    <!---strat-slider---->
+	    <script type="text/javascript" src="js/jquery.min.js"></script>
+	    <link rel="stylesheet" type="text/css" href="css/slider-style.css" />
+	     <link rel="stylesheet" type="text/css" href="css/jquery.mobile.theme-1.4.2.css" />
+	      <link rel="stylesheet" type="text/css" href="css/jquery.mobile.structure-1.4.2.css" />
+	      <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.2.css" />
+	      <link rel="stylesheet" type="text/css" href="css/jquery.icons-1.4.2.css" />
+	 
+		<script type="text/javascript" src="js/modernizr.custom.28468.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.4.2.js"></script>
+		<!---//strat-slider---->
+		<!---start-login-script--->
+		<script src="js/login.js"></script>
+		<!---//End-login-script--->
+		<!-----mobile-menu----->
+		<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css" />
+		<script type="text/javascript" src="js/jquery.mmenu.js"></script>
+			<script type="text/javascript">
+				//	The menu on the left
+				$(function() {
+					$('nav#menu-left').mmenu();
+				});
+		</script>
+		<!-----/mobile-menu----->
 	</head>
 	<body>
-		<div data-role="page" data-add-back-btn="true">
-			<div data-role="header" id="header">
-				<a href="index.html" data-role="button" data-inline="true" data-theme="a" rel="external"><img src="img/arrow_left_icon&24.png"></a>
-				<h1><img src="img/settings.png"></h1>
-			</div><!-- /header -->
-			<div data-role="content">
-				<div class="ui-body ui-body-b ui-corner-all">
-					<div class="contact-thankyou" style="display: none;">
-						Thank you.  Your message has been sent.  We will get back to you as soon as we can.
+		<!---start-wrap---->
+		<!------start-mobile-menu---->
+			<div id="page">
+					<div id="header">
+						<a class="navicon" href="#menu-left"> </a>
 					</div>
-					
+					<nav id="menu-left">
+						<ul>
+							<li><a href="index.html" rel="external">Home</a></li>
+						
+							<li><a href="profile.html" rel="external">Profile</a></li>
+							<li><a href="parkinfo.html" rel="external">Park Info</a></li>
+							<li><a href="settings.html" rel="external">Settings</a></li>
+							<embed name="Woosh" src="sound/Woosh-Mark_DiAngelo-4778593.wav" loop="false" hidden="true" autostart="true">
+							<div class="clear"> </div>
+						</ul>
+					</nav>
+			</div>
+		<!------start-mobile-menu---->
+			<!---start-header---->
+			<div class="header">
+				<div class="wrap">
+				<div class="header-left">
+					<div class="logo">
+						<a href="index.html">Settings</a>
+					</div>
 				</div>
-				<p class="copyright">Copyright &copy; mobi. Designed by <a href="http://mrova.com" class="ui-link">mRova</a></p>
-			</div><!-- /content -->
-			  <div data-role="footer" data-theme="a">
-            <div class="ui-bar">
-        
-             <a href="" data-role="button" data-theme="a" style="float:right;" class="returnTopAction"><img src="img/top.png"></a>             
-           </div>
-          </div>
-          <!-- /Footer --> 
+				<div class="header-right">
+			
+				<div class="clear"> </div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			</div>
+			<!---//End-header---->
+			<!----start-banner---->
+			
+			<!----//End-banner---->
+			<!----start-content--->
+			<div class="content">
+				<div class="wrap">
+					<!--- start-top-grids---->
+					<div class="top-grids">
+						<div class="top-grid">
+							
 
-		</div><!-- /page -->
+						</div>
+						<form>
+						<div class="clear">     <label>
+        <input type="checkbox" name="checkbox-0 ">Public Profile
+    </label>
+</form>
+
+				<form>
+						<div class="clear">     <label>
+        <input type="checkbox" name="checkbox-0 ">Sound
+    </label>
+</form>
+
+<form>
+    <label for="slider-2">Volume</label>
+    <input type="range" name="slider-2" id="slider-2" data-highlight="true" min="0" max="100" value="50">
+</form>
+
+<form>
+    <label for="slider-2">Brightness</label>
+    <input type="range" name="slider-2" id="slider-2" data-highlight="true" min="0" max="100" value="50">
+</form>
+
+
+
+
+
+
+
+</div>
+					</div>
+					</div>
+				
+					
+				<!---//End-mid-grids--->
+				<!---start-bottom-footer-grids---->
+				<div class="footer-grids">
+					<div class="wrap">
+						<div class="footer-grid">
+							
+						</div>
+						<div class="clear"><a href="#" class="ui-btn ui-btn-c">Reset Account</a> </div>
+					</div>
+				</div>
+				<!---//End-bottom-footer-grids---->
+			</div>
+			<!----//End-content--->
+		<!---//End-wrap---->
 	</body>
 </html>
+
