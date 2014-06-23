@@ -98,9 +98,7 @@ function loadMap()
 	}
 }
 $("#view_sharedPhoto").live('click', function(){
-placePhotos();
-	// viewSharedPhoto();
-  // function viewSharedPhoto(){
+
 	if(gpsEnabled == true){
 		alert('view shared photo');
 		  navigator.geolocation.clearWatch(watcher);
@@ -118,10 +116,8 @@ placePhotos();
 		
 		 });
 	}
-// }
+  
 });
-
-
  ////////////////////////////////////////////////////////
  // Marker + photo overlays code template from:
  // http://chrisltd.com/blog/2013/08/google-map-random-color-pins/
@@ -164,10 +160,10 @@ placePhotos();
 				if(sharedPhotos.hasOwnProperty(p)){
 					alert('in loop p: '+sharedPhotos[p].URI);
 					alert(JSON.stringify(sharedPhotos[p].coords));
-					var contentStr = '<div style="width:100%;"><img style="width:100%;"'+ 
+					var contentStr = $('<div style="width:100%;"><img style="width:100%;"'+ 
 										'src="'+sharedPhotos[p].URI+'"/><br>by '+ p+'<br>'+
-										'<button name="un-Share" id="un-Share" class="un-Share" >'+
-										'UnShare</button> </div>';
+										'<button name="un-Share" id="un-Share" class="un-Share">'+
+										'UnShare</button> </div>');
 					marker = new google.maps.Marker({
 						position: new google.maps.LatLng(sharedPhotos[p].coords.latitude, sharedPhotos[p].coords.longitude),
 						map: map,
@@ -186,7 +182,7 @@ placePhotos();
 						};
 					})(marker,contentStr));
 					
-					var rmbtn = $(contentStr.match('un-Share')[0]);
+					var rmbtn = contentStr.find('.un-Share')[0];
 					google.maps.event.addDomListener(rmbtn,'click',(function(marker,pURI,sharedPhotos,markers){
 						return function(){
 						alert('removing1');
@@ -209,7 +205,7 @@ placePhotos();
 								marker.setMap(null);
 								AutoCenter(markers);
 							}
-						};
+						}
 					})(marker,sharedPhotos[p].URI,sharedPhotos,markers));
 					
 					alert('s1');

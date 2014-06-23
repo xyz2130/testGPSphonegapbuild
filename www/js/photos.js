@@ -204,7 +204,7 @@ function isIOS() {
 				var d = new Date();
 				// alert('something2');
 				photos[imageURI].coords = pos;
-				// photos[imageURI].posDate = d.getTime();
+				photos[imageURI].posDate = d.getTime();
 				// alert('sth1');
 			}
 			else{
@@ -395,24 +395,18 @@ function isIOS() {
 				// alert('p2');
 				var pURI;
 				var found = false;
-				
-				//check for milliseconds
-				var lmd = new Date(lastmoddate);
-				if(lmd.getFullYear() - 1970 <=5){
-					lastmoddate = lastmoddate *1000;
-				}
-				
 				for(var p in photos){
 					if(photos.hasOwnProperty(p)){
 						// alert('for '+p+', '+photos[p]+', '+photos[p].modDate);
 						// alert(lastmoddate);
-						var date = photos[p].modDate;
-						var md = new Date(photos[p].modDate);
-						if(md.getFullYear() - 1970 <=5){
-							date = date *1000;
+						var date;
+						if (lastmoddate != photos[p].modDate){
+							date = photos[p].modDate / 1000;
 						}
-						
-						if(date == lastmoddate || (date-lastmoddate <= 1000 && date - lastmoddate => -1000)){
+						else{
+							date = lastmoddate;
+						}
+						if(date == lastmoddate || date-lastmoddate == 1 || date - lastmoddate == -1){
 							// alert('get!!! '+p);
 							pURI = p;
 							deferred.resolve(pURI);
