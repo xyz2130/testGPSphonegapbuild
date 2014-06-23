@@ -167,7 +167,7 @@ function isIOS() {
 		 var obj = window.localStorage.getItem(str);
 		// alert(obj);
 		if(obj!=null && obj!=''){
-		 alert('local exists');
+		 //alert('local exists');
 			obj = JSON.parse(obj);
 
 			deferred.resolve(obj);
@@ -595,7 +595,7 @@ function isIOS() {
 				//no coords data		
 				if(checkCoords == false){
 					if(confirm('tag and share this photo at current GPS location?')){
-						alert('getting coords...');
+						//alert('getting coords...');
 						var pos = currentPosition();
 
 						pos.then(function(pos){
@@ -613,7 +613,7 @@ function isIOS() {
 
 							}
 							else{
-								alert('sharing failed, no GPS available');
+								//alert('sharing failed, no GPS available');
 							}
 						});
 
@@ -637,7 +637,7 @@ function isIOS() {
 
 
 					window.localStorage.setItem("sharedPhotos",JSON.stringify(sharedPhotos));
-					alert('sharing finished');
+					//alert('sharing finished');
 					//upload to server
 					//uploadPhoto();
 				}

@@ -32,16 +32,19 @@ var t = window.localStorage.getItem("tracks");
   window.localStorage.setItem("tracks",JSON.stringify(t));
   
   var s = window.localStorage.getItem("sharedPhotos");
-  var photodummy = { URI:'file://localhost/persistent/DCIM/Camera/1403522255703.jpg',
-					 coords: {longitude:170.33416166666666,latitude:-45.871478333333336},
+  var photodummy = { URI:'../images/IMG_0052.jpg',
+					 coords: {longitude:174.790464,latitude:-41.295845},
 					 shared: true,
 					 };
-var photodummy2 = { URI:'file://localhost/DCIM/Camera/1403522255703.jpg',
-					 coords: {longitude:170.33481666666665,latitude:-45.87465},
+var photodummy2 = { URI:'../images/IMG_0061.jpg',
+					 coords: {longitude:174.790474,latitude:-41.294285},
+
 					 shared: true,
 					 };
- var photodummy3 = { URI:'content://media/external/images/media/22847',
-					 coords: {longitude:170.33426999999998,latitude:-45.87475166666666},
+ var photodummy3 = { URI:'../images/IMG_0067.jpg',
+					 coords: {longitude:174.791099,latitude:-41.294073},
+
+
 					 shared: true,
 					 };
   if(s!='' && s!=null){
