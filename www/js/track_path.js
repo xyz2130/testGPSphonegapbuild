@@ -6,7 +6,7 @@
 Object.size = function(obj){
    var size=0,key;
  	for(key in obj){
- 	  if(obj.hasOwnProperty(key)) {alert(key);alert(obj[key]);size++;}
+ 	  /*if(obj.hasOwnProperty(key)) {alert(key);alert(obj[key]);*/size++;}
  	}
  	return size;
 };
@@ -91,12 +91,12 @@ $("#startTracking_stop").live('click', function(){
   else{
    track_records = JSON.parse(track_records); 
   }
-  alert("track_id before "+track_id);
+  // alert("track_id before "+track_id);
   track_id = checkKey(track_id,track_records,track_id.length);
-  alert("track_id after "+track_id);
+  // alert("track_id after "+track_id);
   track_records[track_id] = tracking_data;
-  alert(track_records);
-  alert(track_records[track_id]);
+  // alert(track_records);
+  // alert(track_records[track_id]);
   window.localStorage.setItem("tracks", JSON.stringify(track_records));
   
   // Reset watch_id and tracking_data 
@@ -127,9 +127,9 @@ function checkKey(id,records,len){
       return id;
   }
   var matched = false;
-  alert('len '+len);
+  // alert('len '+len);
   for(key in records){
-    alert('id in loop '+id);
+    // alert('id in loop '+id);
     
       if(key == id){
 	matched = true;
@@ -139,9 +139,9 @@ function checkKey(id,records,len){
   if(matched){
 	if(len!=id.length){
 	  var tmp = id.slice(0,len);
-	  alert('tmp '+tmp);
+	  // alert('tmp '+tmp);
 	  var tmp2 = parseInt(id.slice(len+1,id.length));
-	  alert('tmp2 '+tmp2);
+	  // alert('tmp2 '+tmp2);
 	  tmp2++;
 	  return checkKey(tmp.concat('_'+tmp2),records,len);
 	}
@@ -175,7 +175,7 @@ $("#view_track").live('click',function(){
     
       for(key in tracks){
 	
-	alert(key);
+	// alert(key);
 	var data = tracks[key];
 	
 	//data = JSON.parse(data);

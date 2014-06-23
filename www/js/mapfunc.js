@@ -10,6 +10,10 @@
 ///////////////////////////////////////////
 var gpsEnabled;
 var map;
+var watcher;
+var markerYou;
+var infowindowYou;
+var myLocation;
 function loadMap()
 {
 	var browserSupportFlag =  new Boolean();
@@ -32,7 +36,7 @@ function loadMap()
 		navigator.geolocation.getCurrentPosition(function(position) {
 			gpsEnabled = true;
 			// Create the Google Maps API location object
-			var myLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+			myLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
 			
 			// Tell the map to center on the user's location
 			map.setCenter(myLocation);
@@ -40,7 +44,7 @@ function loadMap()
 			map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
 			// Make the user's marker object and put it on the map
 			
-			var markerYou = new google.maps.Marker({
+			markerYou = new google.maps.Marker({
 				position: myLocation, 
 				map: map, 
 				title: 'You are here.',
@@ -49,7 +53,7 @@ function loadMap()
 			// Bounce the marker on the map
 			markerYou.setAnimation(google.maps.Animation.BOUNCE);
 			// Make the marker information pop-up
-			var infowindowYou = new google.maps.InfoWindow({
+			infowindowYou = new google.maps.InfoWindow({
 				content: 'You are here'
 			});
 			// Listen for the user's click on the marker to show the pop-up
@@ -57,7 +61,7 @@ function loadMap()
 				infowindowYou.open(map,markerYou);
 			});
 			// Watch the user's device GPS for new location.
-			var watcher = navigator.geolocation.watchPosition(function(newPosition) {
+			watcher = navigator.geolocation.watchPosition(function(newPosition) {
 					// Each time a new location is registered, move the marker.
 					myLocation = new google.maps.LatLng(newPosition.coords.latitude,newPosition.coords.longitude);
 					markerYou.setPosition(myLocation);
@@ -93,7 +97,31 @@ function loadMap()
 		}
 	}
 }
- 
+$("#view_sharedPhoto").live('click', function(){
+placePhotos();
+	// viewSharedPhoto();
+  // function viewSharedPhoto(){
+	// if(gpsEnabled == true){
+		// alert('view shared photo');
+		  // navigator.geolocation.clearWatch(watcher);
+		  // watcher = false;
+		  // markerYou.setMap(null);
+		  // alert('watcher cleared');
+		  // placePhotos().then(function(){
+		  	// markerYou.setMap(map);
+			// alert('place photos done, continue watching');
+			// watcher = navigator.geolocation.watchPosition(function(newPosition) {
+					// // Each time a new location is registered, move the marker.
+					// myLocation = new google.maps.LatLng(newPosition.coords.latitude,newPosition.coords.longitude);
+					// markerYou.setPosition(myLocation);
+			// }, function() {}, {enableHighAccuracy:true, maximumAge:30000, timeout:27000});
+		
+		 // });
+	// }
+// }
+});
+
+
  ////////////////////////////////////////////////////////
  // Marker + photo overlays code template from:
  // http://chrisltd.com/blog/2013/08/google-map-random-color-pins/
@@ -114,16 +142,17 @@ function loadMap()
     var icons_length = icons.length;
 
 	function placePhotos(){
-	// alert('start sharing');
+	var deferred = new $.Deferred();
+	alert('start sharing');
 	// var p = { URI:'content://media/external/images/media/19928',
-					 // coords: {longitude:170.33416166666666,latitude:-45.871478333333336},
-					 // shared: true,
-					 // };
+	// 				  coords: {longitude:170.33416166666666,latitude:-45.871478333333336},
+	// 				  shared: true,
+	// 				  };
 		var sharedPhotos = window.localStorage.getItem("sharedPhotos");
 		if(sharedPhotos!=null && sharedPhotos!=''){
-			// alert('get saved data');
+			alert('get saved data');
 			sharedPhotos = JSON.parse(sharedPhotos);
-			// alert('infowindow');
+			alert('infowindow');
 			var infowindow = new google.maps.InfoWindow({
 				maxWidth: 150
 			});
@@ -133,41 +162,44 @@ function loadMap()
 			
 			for(p in sharedPhotos){
 				if(sharedPhotos.hasOwnProperty(p)){
-					// alert('in loop p: '+sharedPhotos[p].URI);
-					var contentStr = $('<div style="width:100%;"><img style="width:100%;"'+ 
+					alert('in loop p: '+sharedPhotos[p].URI);
+					alert(JSON.stringify(sharedPhotos[p].coords));
+					var contentStr = '<div style="width:100%;"><img style="width:100%;"'+ 
 										'src="'+sharedPhotos[p].URI+'"/><br>by '+ p+'<br>'+
-										'<button name="un-Share" id="un-Share" class="un-Share">'+
-										'UnShare</button> </div>');
+										'<button name="un-Share" id="un-Share" class="un-Share" >'+
+										'UnShare</button> </div>';
 					marker = new google.maps.Marker({
 						position: new google.maps.LatLng(sharedPhotos[p].coords.latitude, sharedPhotos[p].coords.longitude),
 						map: map,
 						icon: icons[iconCounter],
 					});
-					
+					alert(marker);
 					markers.push(marker);
+					alert('markers pushed');
+					
 					
 					google.maps.event.addListener(marker,'click', (function(marker,c) {
 						return function(){
-						// alert('setcontent');
+						alert('setcontent');
 							infowindow.setContent(c);
 							infowindow.open(map,marker);
-						}
-					})(marker,contentStr[0]));
+						};
+					})(marker,contentStr));
 					
-					var rmbtn = contentStr.find('.un-Share')[0];
+					var rmbtn = $(contentStr.match('un-Share')[0]);
 					google.maps.event.addDomListener(rmbtn,'click',(function(marker,pURI,sharedPhotos,markers){
 						return function(){
-						// alert('removing1');
+						alert('removing1');
 						alert(marker+' '+pURI+' '+sharedPhotos);
 							var photos = window.localStorage.getItem("photos");
 							if(photos!=null &&photos!=''){
-							// alert(photos);
+							alert(photos);
 								photos = JSON.parse(photos);
-								// alert(photos);
+								alert(photos);
 							}
-							// alert(sharedPhotos[pURI]+' '+photos[pURI]);
+							alert(sharedPhotos[pURI]+' '+photos[pURI]);
 							if(sharedPhotos[pURI]!=null && sharedPhotos[pURI]!=''){
-							// alert('removing');
+							alert('removing');
 								delete sharedPhotos[pURI];
 								if(photos[pURI]!=null&& photos[pURI]!='' ){
 									photos[pURI].shared = false;
@@ -177,9 +209,10 @@ function loadMap()
 								marker.setMap(null);
 								AutoCenter(markers);
 							}
-						}
+						};
 					})(marker,sharedPhotos[p].URI,sharedPhotos,markers));
 					
+					alert('s1');
 					iconCounter++;
 					if(iconCounter >=icons_length){
 						iconCounter = 0;
@@ -189,24 +222,29 @@ function loadMap()
 			}
 			
 			AutoCenter(markers);
-
+			deferred.resolve();
 		}
 		else{
 			alert('no sharedPhotos found');
+			deferred.resolve();
 		}
+		return deferred.promise();
 	}
 
 function AutoCenter(markers) {
-// alert('auto center');
+alert('auto center');
   //  Create a new viewpoint bound
   var bounds = new google.maps.LatLngBounds();
   //  Go through each...
   $.each(markers, function (index, marker) {
 	bounds.extend(marker.position);
   });
+  alert('s2');
   //  Fit these bounds to the map
-  map.fitBounds(bounds);
+  // map.fitBounds(bounds);
+  alert('s3');
   map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+  alert('s4');
 }
 	
 function drawPath(data){

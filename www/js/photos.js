@@ -386,15 +386,27 @@ function isIOS() {
 			  
 			// alert('delete localstorage');
 			
-			if(lastmoddate!=null && lastmoddate!='' && lastmoddate!='Invaid Date'){
+			if(lastmoddate!=null && lastmoddate!='' && lastmoddate!='Invaid Date' && lastmoddate!=0){
 				//find the photo with the same last mod time and delete
 				var pURI;
 				var found = false;
+				
+				//check for milliseconds
+				var lmd = new Date(lastmoddate);
+				if(lmd.getFullYear() - 1970 <=5){
+					lastmoddate = lastmoddate *1000;
+				}
+				
 				for(var p in photos){
 					if(photos.hasOwnProperty(p)){
 						// alert('for '+p+', '+photos[p]+', '+photos[p].modDate);
-						var date = photos[p].modDate / 1000;
-						if(date == lastmoddate || date-lastmoddate == 1 || date - lastmoddate == -1){
+						var date = photos[p].modDate;
+						var md = new Date(photos[p].modDate);
+						if(md.getFullYear() - 1970 <=5){
+							date = date *1000;
+						}
+						
+						if(date == lastmoddate || date-lastmoddate == 1000 || date - lastmoddate == -1000){
 							alert('get!!! '+p);
 							pURI = p;
 							deferred.resolve(pURI);
